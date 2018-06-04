@@ -3,6 +3,7 @@ package com.thinkgem.jeesite.modules.wx.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.common.entity.ActionBaseDto;
 import com.thinkgem.jeesite.common.entity.ResponseData;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,8 +90,16 @@ public class FoodCategoryController extends BaseController {
     @RequiresPermissions("wx:foodCategory:edit")
     @RequestMapping(value = "delete")
     public String delete(FoodCategory foodCategory, RedirectAttributes redirectAttributes) {
-        foodCategoryService.delete(foodCategory);
-        addMessage(redirectAttributes, "删除菜品分类成功");
+        if (null == foodCategory || StringUtils.isEmpty(foodCategory.getId())) {
+            addMessage(redirectAttributes, "删除菜品分类失败，分类id不能为空！");
+        } else {
+            ActionBaseDto actionBaseDto = foodCategoryService.deleteByCategoryId(foodCategory.getId());
+            if (actionBaseDto.isSuccess()) {
+                addMessage(redirectAttributes, "删除菜品分类成功");
+            } else {
+                addMessage(redirectAttributes, "删除菜品分类失败，" + actionBaseDto.getDesc());
+            }
+        }
         return "redirect:" + Global.getAdminPath() + "/wx/foodCategory/?repage";
     }
 

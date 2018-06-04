@@ -13,25 +13,25 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
  * @version 2018-06-04
  */
 public class FoodCategory extends DataEntity<FoodCategory> {
-	
-	private static final long serialVersionUID = 1L;
-	private String name;		// name
-	
-	public FoodCategory() {
-		super();
-	}
+    
+    private static final long serialVersionUID = 1L;
+    private String name;        // name
+    
+    public FoodCategory() {
+        super();
+    }
 
-	public FoodCategory(String id){
-		super(id);
-	}
+    public FoodCategory(String id){
+        super(id);
+    }
 
-	@Length(min=1, max=64, message="name长度必须介于 1 和 64 之间")
-	public String getName() {
-		return name;
-	}
+    @Length(min=1, max=64, message="name长度必须介于 1 和 64 之间")
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+    public void setName(String name) {
+        this.name = name;
+    }
+    
 }

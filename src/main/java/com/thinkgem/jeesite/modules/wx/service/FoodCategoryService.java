@@ -1,8 +1,11 @@
 package com.thinkgem.jeesite.modules.wx.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import com.thinkgem.jeesite.common.entity.ActionBaseDto;
+import com.thinkgem.jeesite.modules.wx.entity.Food;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.wx.entity.FoodCategory;
 import com.thinkgem.jeesite.modules.wx.dao.FoodCategoryDao;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 菜品分类Service
@@ -24,6 +28,9 @@ public class FoodCategoryService extends CrudService<FoodCategoryDao, FoodCatego
 
     @Autowired
     private FoodCategoryDao foodCategoryDao;
+
+    @Autowired
+    private FoodService foodService;
 
     public FoodCategory get(String id) {
         return super.get(id);
@@ -58,6 +65,22 @@ public class FoodCategoryService extends CrudService<FoodCategoryDao, FoodCatego
     @Transactional(readOnly = false)
     public void delete(FoodCategory foodCategory) {
         super.delete(foodCategory);
+    }
+
+    public ActionBaseDto deleteByCategoryId(String categoryId) {
+        // 判断categoryId是否被菜品引用
+        Food food = new Food();
+        food.setCategoryId(categoryId);
+        List<Food> list = foodService.findList(food);
+        if (!CollectionUtils.isEmpty(list)) {
+            return ActionBaseDto.getFailedInstance("该分类下已经有菜品，不能删除！");
+        }
+
+        // 删除分类
+        FoodCategory foodCategory = new FoodCategory();
+        foodCategory.setId(categoryId);
+        super.delete(foodCategory);
+        return ActionBaseDto.getSuccessInstance();
     }
 
 }

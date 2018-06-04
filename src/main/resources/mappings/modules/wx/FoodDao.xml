@@ -2,97 +2,103 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.wx.dao.FoodDao">
     
-	<sql id="foodColumns">
-		a.id AS "id",
-		a.type AS "type",
-		a.name AS "name",
-		a.picture AS "picture",
-		a.price AS "price",
-		a.recommend AS "recommend"
-	</sql>
-	
-	<sql id="foodJoins">
-	</sql>
+    <sql id="foodColumns">
+        a.id AS "id",
+        a.categoryId AS "categoryId",
+        a.name AS "name",
+        a.picture AS "picture",
+        a.price AS "price",
+        a.recommend AS "recommend",
+        a.state AS "state"
+    </sql>
     
-	<select id="get" resultType="Food">
-		SELECT 
-			<include refid="foodColumns"/>
-		FROM wx_food a
-		<include refid="foodJoins"/>
-		WHERE a.id = #{id}
-	</select>
-	
-	<select id="findList" resultType="Food">
-		SELECT 
-			<include refid="foodColumns"/>
-		FROM wx_food a
-		<include refid="foodJoins"/>
-		<where>
-			
-			<if test="name != null and name != ''">
-				AND a.name LIKE 
-					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
-			</if>
-		</where>
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-			</otherwise>
-		</choose>
-	</select>
-	
-	<select id="findAllList" resultType="Food">
-		SELECT 
-			<include refid="foodColumns"/>
-		FROM wx_food a
-		<include refid="foodJoins"/>
-		<where>
-			
-		</where>		
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-			</otherwise>
-		</choose>
-	</select>
-	
-	<insert id="insert">
-		INSERT INTO wx_food(
-			id,
-			type,
-			name,
-			picture,
-			price,
-			recommend
-		) VALUES (
-			#{id},
-			#{type},
-			#{name},
-			#{picture},
-			#{price},
-			#{recommend}
-		)
-	</insert>
-	
-	<update id="update">
-		UPDATE wx_food SET 	
-			type = #{type},
-			name = #{name},
-			picture = #{picture},
-			price = #{price},
-			recommend = #{recommend}
-		WHERE id = #{id}
-	</update>
-	
-	<update id="delete">
-		DELETE FROM wx_food
-		WHERE id = #{id}
-	</update>
-	
+    <sql id="foodJoins">
+    </sql>
+    
+    <select id="get" resultType="Food">
+        SELECT 
+            <include refid="foodColumns"/>
+        FROM wx_food a
+        <include refid="foodJoins"/>
+        WHERE a.id = #{id}
+    </select>
+    
+    <select id="findList" resultType="Food">
+        SELECT 
+            <include refid="foodColumns"/>
+        FROM wx_food a
+        <include refid="foodJoins"/>
+        <where>
+            <if test="name != null and name != ''">
+                AND a.name LIKE 
+                    <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+                    <if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+                    <if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                AND a.categoryId = #{categoryId}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+    
+    <select id="findAllList" resultType="Food">
+        SELECT 
+            <include refid="foodColumns"/>
+        FROM wx_food a
+        <include refid="foodJoins"/>
+        <where>
+            
+        </where>        
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+    
+    <insert id="insert">
+        INSERT INTO wx_food(
+            id,
+            categoryId,
+            name,
+            picture,
+            price,
+            recommend,
+            state
+        ) VALUES (
+            #{id},
+            #{categoryId},
+            #{name},
+            #{picture},
+            #{price},
+            #{recommend},
+            #{state}
+        )
+    </insert>
+    
+    <update id="update">
+        UPDATE wx_food SET     
+            categoryId = #{categoryId},
+            name = #{name},
+            picture = #{picture},
+            price = #{price},
+            recommend = #{recommend},
+            state = #{state}
+        WHERE id = #{id}
+    </update>
+    
+    <update id="delete">
+        DELETE FROM wx_food
+        WHERE id = #{id}
+    </update>
+    
 </mapper>
