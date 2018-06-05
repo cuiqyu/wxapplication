@@ -5,6 +5,8 @@ import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wx.entity.FoodCategory;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 菜品分类DAO接口
  * @author tgp
@@ -15,4 +17,5 @@ public interface FoodCategoryDao extends CrudDao<FoodCategory> {
 
     FoodCategory getByName(@Param(value = "name") String name);
 
+    List<FoodCategory> listAllFoodCategory();
 }

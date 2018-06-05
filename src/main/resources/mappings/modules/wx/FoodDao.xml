@@ -100,5 +100,11 @@
         DELETE FROM wx_food
         WHERE id = #{id}
     </update>
+
+    <select id="listFoodByCategoryId" resultType="Food">
+        select <include refid="foodColumns"/>
+        FROM wx_food a
+        where categoryId = #{categoryId}
+    </select>
     
 </mapper>

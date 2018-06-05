@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.wx.service;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,9 @@ import com.thinkgem.jeesite.modules.wx.dao.FoodDao;
 @Service
 @Transactional(readOnly = true)
 public class FoodService extends CrudService<FoodDao, Food> {
+
+    @Autowired
+    private FoodDao foodDao;
 
 	public Food get(String id) {
 		return super.get(id);
@@ -43,5 +48,12 @@ public class FoodService extends CrudService<FoodDao, Food> {
 	public void delete(Food food) {
 		super.delete(food);
 	}
+
+	public List<Food> listFoodByCategoryId(String categoryId) {
+	    if (StringUtils.isEmpty(categoryId)) {
+	        throw new IllegalArgumentException("分类id不可为空");
+        }
+	    return foodDao.listFoodByCategoryId(categoryId);
+    }
 	
 }
