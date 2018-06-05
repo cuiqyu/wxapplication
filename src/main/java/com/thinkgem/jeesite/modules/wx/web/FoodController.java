@@ -3,6 +3,8 @@ package com.thinkgem.jeesite.modules.wx.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.wx.entity.FoodCategory;
+import com.thinkgem.jeesite.modules.wx.service.FoodCategoryService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wx.entity.Food;
 import com.thinkgem.jeesite.modules.wx.service.FoodService;
 
+import java.util.List;
+
 /**
  * 菜品Controller
  * @author tgp
@@ -30,6 +34,9 @@ public class FoodController extends BaseController {
 
     @Autowired
     private FoodService foodService;
+
+    @Autowired
+    private FoodCategoryService foodCategoryService;
     
     @ModelAttribute
     public Food get(@RequestParam(required=false) String id) {
@@ -49,8 +56,11 @@ public class FoodController extends BaseController {
     @RequiresPermissions("wx:food:view")
     @RequestMapping(value = {"list", ""})
     public String list(Food food, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Page<Food> page = foodService.findPage(new Page<Food>(request, response), food); 
+        Page<Food> page = foodService.findPage(new Page<Food>(request, response), food);
+        List<FoodCategory> categoryList = foodCategoryService.findList(null);
+
         model.addAttribute("page", page);
+        model.addAttribute("categoryList", categoryList);
         return "modules/wx/foodList";
     }
 
@@ -60,7 +70,9 @@ public class FoodController extends BaseController {
     @RequiresPermissions("wx:food:view")
     @RequestMapping(value = "form")
     public String form(Food food, Model model) {
+        List<FoodCategory> categoryList = foodCategoryService.findList(null);
         model.addAttribute("food", food);
+        model.addAttribute("categoryList", categoryList);
         return "modules/wx/foodForm";
     }
 
