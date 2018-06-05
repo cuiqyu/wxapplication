@@ -5,8 +5,8 @@ package com.thinkgem.jeesite.modules.wx.service;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.entity.ActionBaseDto;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,6 +59,13 @@ public class FoodService extends CrudService<FoodDao, Food> {
 
         int result = foodDao.updateById(food);
         return (result == 1) ? ActionBaseDto.getSuccessInstance() : ActionBaseDto.getFailedInstance();
+    }
+
+    public List<Food> listFoodByCategoryId(String categoryId) {
+        if (StringUtils.isEmpty(categoryId)) {
+            throw new IllegalArgumentException("分类id不可为空");
+        }
+        return foodDao.listFoodByCategoryId(categoryId);
     }
 
 }

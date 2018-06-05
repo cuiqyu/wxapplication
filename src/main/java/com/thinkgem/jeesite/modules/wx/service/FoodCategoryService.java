@@ -83,4 +83,11 @@ public class FoodCategoryService extends CrudService<FoodCategoryDao, FoodCatego
         return ActionBaseDto.getSuccessInstance();
     }
 
+    /**
+     * 查询所有菜单分类
+     * @return
+     */
+    public List<FoodCategory> listAllFoodCategory() {
+        return foodCategoryDao.listAllFoodCategory();
+    }
 }

@@ -86,5 +86,11 @@
         DELETE FROM wx_food_category
         WHERE id = #{id}
     </update>
+
+    <select id="listAllFoodCategory" resultType="com.thinkgem.jeesite.modules.wx.entity.FoodCategory">
+        SELECT
+        <include refid="foodCategoryColumns"/>
+        FROM wx_food_category a
+    </select>
     
 </mapper>
