@@ -32,8 +32,33 @@
         <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
         <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
         <ul class="ul-form">
-            <li><label>name：</label>
+            <li><label>菜品id：</label>
+                <form:input path="id" htmlEscape="false" maxlength="64" class="input-medium"/>
+            </li>
+            <li><label>菜品名称：</label>
                 <form:input path="name" htmlEscape="false" maxlength="64" class="input-medium"/>
+            </li>
+            <li><label>菜品分类：</label>
+                <form:select path="categoryId" class="input-small required">
+                    <form:option value="">--请选择--</form:option>
+                    <c:forEach items="${categoryList}" var="category">
+                        <form:option value="${category.id}">${category.name}</form:option>
+                    </c:forEach>
+                </form:select>
+            </li>
+            <li><label>是否推荐：</label>
+                <form:select path="recommend" class="input-small required">
+                    <form:option value="">全部</form:option>
+                    <form:option value="1">是</form:option>
+                    <form:option value="0">否</form:option>
+                </form:select>
+            </li>
+            <li><label>上架状态：</label>
+                <form:select path="state" class="input-small required">
+                    <form:option value="">全部</form:option>
+                    <form:option value="1">已上架</form:option>
+                    <form:option value="0">已下架</form:option>
+                </form:select>
             </li>
             <li class="btns">
                 <div class="btn-group">
@@ -49,29 +74,38 @@
         <thead>
             <tr>
                 <th>菜品id</th>
-                <th>菜品分类</th>
                 <th>菜品名称</th>
+                <th>菜品分类</th>
                 <th>菜品图片</th>
                 <th>菜品价格</th>
-                <th>是否商家推荐</th>
-                <th>是否上架</th>
+                <th>是否推荐</th>
+                <th>上架状态</th>
                 <shiro:hasPermission name="wx:food:edit"><th>操作</th></shiro:hasPermission>
             </tr>
         </thead>
         <tbody>
-        <c:forEach items="${page.list}" var="food">
+        <c:forEach items="${list}" var="food">
             <tr>
                 <td><a href="${ctx}/wx/food/form?id=${food.id}">${food.id}</a></td>
-                <td>${food.categoryName}</td>
                 <td>${food.name}</td>
-                <td><img src="${food.picture}"></td>
+                <td>${food.categoryName}</td>
+                <td><img src="${food.picture}" style="max-width:120px; max-height: 100px"></td>
                 <td>${food.price}</td>
                 <td>${food.recommend ? '是' : '否'}</td>
-                <td>${food.state ? '上架中' : '已下架'}</td>
-                <shiro:hasPermission name="wx:food:edit"><td>
-                    <a href="${ctx}/wx/food/form?id=${food.id}">修改</a>
-
-                </td></shiro:hasPermission>
+                <td>${food.state ? '已上架' : '已下架'}</td>
+                <shiro:hasPermission name="wx:food:edit">
+                    <td>
+                        <a href="${ctx}/wx/food/form?id=${food.id}">修改</a>
+                        <c:choose>
+                            <c:when test="${food.recommend}"><a href="${ctx}/wx/food/cancelRecommend?id=${food.id}" onclick="return confirmx('确认是否取消该商品推荐？', this.href)">取消推荐</a></c:when>
+                            <c:otherwise><a href="${ctx}/wx/food/recommend?id=${food.id}" onclick="return confirmx('确认推荐该商品？', this.href)">推荐</a></c:otherwise>
+                        </c:choose>
+                        <c:choose>
+                            <c:when test="{food.state}"><a href="${ctx}/wx/food/undercarriage?id=${food.id}" onclick="return confirmx('确认下架该商品，下架后前台将不展示该商品？', this.href)">下架</a></c:when>
+                            <c:otherwise><a href="${ctx}/wx/food/grounding?id=${food.id}" onclick="return confirmx('确认上架该商品，上架后台该商品将会在前端展示？', this.href)">上架</a></c:otherwise>
+                        </c:choose>
+                    </td>
+                </shiro:hasPermission>
             </tr>
         </c:forEach>
         </tbody>

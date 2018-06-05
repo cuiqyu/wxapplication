@@ -14,5 +14,7 @@ import com.thinkgem.jeesite.modules.wx.entity.Food;
  */
 @MyBatisDao
 public interface FoodDao extends CrudDao<Food> {
-	
+
+    int updateById(Food food);
+
 }

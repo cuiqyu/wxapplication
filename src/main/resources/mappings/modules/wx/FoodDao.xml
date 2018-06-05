@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.wx.dao.FoodDao">
-    
+
     <sql id="foodColumns">
         a.id AS "id",
         a.categoryId AS "categoryId",
@@ -11,32 +11,38 @@
         a.recommend AS "recommend",
         a.state AS "state"
     </sql>
-    
     <sql id="foodJoins">
     </sql>
-    
     <select id="get" resultType="Food">
-        SELECT 
-            <include refid="foodColumns"/>
+        SELECT
+        <include refid="foodColumns"/>
         FROM wx_food a
         <include refid="foodJoins"/>
         WHERE a.id = #{id}
     </select>
-    
     <select id="findList" resultType="Food">
-        SELECT 
-            <include refid="foodColumns"/>
+        SELECT
+        <include refid="foodColumns"/>
         FROM wx_food a
         <include refid="foodJoins"/>
         <where>
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
             <if test="name != null and name != ''">
-                AND a.name LIKE 
-                    <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-                    <if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
-                    <if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+                AND a.name LIKE
+                <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
             </if>
             <if test="categoryId != null and categoryId != ''">
                 AND a.categoryId = #{categoryId}
+            </if>
+            <if test="recommend != null">
+                AND a.recommend = #{recommend}
+            </if>
+            <if test="state != null">
+                AND a.state = #{state}
             </if>
         </where>
         <choose>
@@ -47,15 +53,13 @@
             </otherwise>
         </choose>
     </select>
-    
     <select id="findAllList" resultType="Food">
-        SELECT 
-            <include refid="foodColumns"/>
+        SELECT
+        <include refid="foodColumns"/>
         FROM wx_food a
         <include refid="foodJoins"/>
         <where>
-            
-        </where>        
+        </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
                 ORDER BY ${page.orderBy}
@@ -64,7 +68,6 @@
             </otherwise>
         </choose>
     </select>
-    
     <insert id="insert">
         INSERT INTO wx_food(
             id,
@@ -84,9 +87,8 @@
             #{state}
         )
     </insert>
-    
     <update id="update">
-        UPDATE wx_food SET     
+        UPDATE wx_food SET
             categoryId = #{categoryId},
             name = #{name},
             picture = #{picture},
@@ -95,10 +97,32 @@
             state = #{state}
         WHERE id = #{id}
     </update>
-    
     <update id="delete">
         DELETE FROM wx_food
         WHERE id = #{id}
     </update>
-    
+    <update id="updateById">
+        UPDATE wx_food
+        <set>
+            <if test="categoryId != null and categoryId != ''">
+                categoryId = #{categoryId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="picture != null and picture != ''">
+                picture = #{picture},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="recommend != null">
+                recommend = #{recommend},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>

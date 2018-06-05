@@ -17,8 +17,8 @@ public class Food extends DataEntity<Food> {
     private String name; // 菜品名称
     private String picture; // 图片
     private BigDecimal price; // 价格
-    private boolean recommend; // 是否推荐
-    private boolean state; // 上架状态
+    private Boolean recommend; // 是否推荐
+    private Boolean state; // 上架状态
 
     // 附加字段
     private String categoryName; // 分类名称
@@ -67,20 +67,20 @@ public class Food extends DataEntity<Food> {
     }
 
     @Length(min=0, max=1, message="recommend长度必须介于 0 和 1 之间")
-    public boolean getRecommend() {
+    public Boolean getRecommend() {
         return recommend;
     }
 
-    public void setRecommend(boolean recommend) {
+    public void setRecommend(Boolean recommend) {
         this.recommend = recommend;
     }
 
     @Length(min=0, max=1, message="state长度必须介于 0 和 1 之间")
-    public boolean getState() {
+    public Boolean getState() {
         return state;
     }
 
-    public void setState(boolean state) {
+    public void setState(Boolean state) {
         this.state = state;
     }
 

@@ -6,7 +6,37 @@
     <meta name="decorator" content="default"/>
     <script type="text/javascript">
         $(document).ready(function () {
+            jQuery(function(){
+                //校验输入的是否是金额格式
+                jQuery.validator.methods.compareMoneyNumber = function(value, element, param) {
+                    if (value == null || value == '') {
+                        return true;
+                    }
+                    if(!/^\d*(\.\d{1,2})?$/.test(value)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                };
+            });
+
             $("#inputForm").validate({
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    price: {
+                        compareMoneyNumber: "input[name='price']"
+                    },
+                },
+                messages:{
+                    name: {
+                        required: "必填信息"
+                    },
+                    price: {
+                        compareMoneyNumber: "格式有误，请输入金额格式（整数或带两位小数的整数）"
+                    },
+                },
                 submitHandler: function (form) {
                     loading('正在提交，请稍等...');
                     form.submit();
@@ -68,22 +98,21 @@
     <div class="control-group">
         <label class="control-label">菜品价格：</label>
         <div class="controls">
-            <form:input path="price" htmlEscape="false" class="input-large required"/>
+            <form:input path="price" htmlEscape="false" placeholder="菜品价格" class="input-large required"/>
             <span class="help-inline"><font color="red">*</font> </span>
         </div>
     </div>
     <div class="control-group">
         <label class="control-label">是否推荐：</label>
         <div class="controls">
-            <form:radiobutton path="recommend" value="1"/>是
-            <form:radiobutton path="recommend" value="0"/>否
+            <form:radiobuttons path="recommend" items="${recommendedStateMap}" class="input-medium required"/>
         </div>
     </div>
     <div class="control-group">
         <label class="control-label">上架状态：</label>
         <div class="controls">
-            <form:radiobutton path="state" value="1"/>上架
-            <form:radiobutton path="state" value="0"/>下架
+            <form:radiobuttons path="state" items="${shelfStateMap}" class="input-medium required"/>
+            <span class="help-inline"> 如果是下架状态，该菜品将不在前台展示 </span>
         </div>
     </div>
     <div class="form-actions">
