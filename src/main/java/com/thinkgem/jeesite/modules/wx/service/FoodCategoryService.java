@@ -67,6 +67,7 @@ public class FoodCategoryService extends CrudService<FoodCategoryDao, FoodCatego
         super.delete(foodCategory);
     }
 
+    @Transactional(readOnly = false)
     public ActionBaseDto deleteByCategoryId(String categoryId) {
         // 判断categoryId是否被菜品引用
         Food food = new Food();
