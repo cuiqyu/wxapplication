@@ -32,9 +32,6 @@
         <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
         <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
         <ul class="ul-form">
-            <li><label>菜品id：</label>
-                <form:input path="id" htmlEscape="false" maxlength="64" class="input-medium"/>
-            </li>
             <li><label>菜品名称：</label>
                 <form:input path="name" htmlEscape="false" maxlength="64" class="input-medium"/>
             </li>
@@ -73,7 +70,6 @@
     <table id="contentTable" class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th>菜品id</th>
                 <th>菜品名称</th>
                 <th>菜品分类</th>
                 <th>菜品图片</th>
@@ -86,7 +82,6 @@
         <tbody>
         <c:forEach items="${list}" var="food">
             <tr>
-                <td><a href="${ctx}/wx/food/form?id=${food.id}">${food.id}</a></td>
                 <td>${food.name}</td>
                 <td>${food.categoryName}</td>
                 <td><img src="${food.picture}" style="max-width:120px; max-height: 100px"></td>
@@ -101,7 +96,7 @@
                             <c:otherwise><a href="${ctx}/wx/food/recommend?id=${food.id}" onclick="return confirmx('确认推荐该商品？', this.href)">推荐</a></c:otherwise>
                         </c:choose>
                         <c:choose>
-                            <c:when test="{food.state}"><a href="${ctx}/wx/food/undercarriage?id=${food.id}" onclick="return confirmx('确认下架该商品，下架后前台将不展示该商品？', this.href)">下架</a></c:when>
+                            <c:when test="${food.state}"><a href="${ctx}/wx/food/undercarriage?id=${food.id}" onclick="return confirmx('确认下架该商品，下架后前台将不展示该商品？', this.href)">下架</a></c:when>
                             <c:otherwise><a href="${ctx}/wx/food/grounding?id=${food.id}" onclick="return confirmx('确认上架该商品，上架后台该商品将会在前端展示？', this.href)">上架</a></c:otherwise>
                         </c:choose>
                     </td>

@@ -51,6 +51,7 @@ public class FoodService extends CrudService<FoodDao, Food> {
         super.delete(food);
     }
 
+    @Transactional(readOnly = false)
     public ActionBaseDto updateById(Food food) {
         if (null == food || StringUtils.isEmpty(food.getId())) {
             logger.error("更新菜品信息失败，菜品id不能为空！");

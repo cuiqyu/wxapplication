@@ -35,10 +35,6 @@
             <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
             <ul class="ul-form">
                 <li>
-                    <label>分类id：</label>
-                    <form:input path="id" htmlEscape="false" maxlength="64" class="input-large"/>
-                </li>
-                <li>
                     <label>分类名称：</label>
                     <form:input path="name" htmlEscape="false" maxlength="64" class="input-medium"/>
                 </li>
@@ -55,7 +51,6 @@
         <table id="contentTable" class="table table-striped table-bordered table-condensed">
             <thead>
                 <tr>
-                    <th>分类id</th>
                     <th>分类名称</th>
                     <shiro:hasPermission name="wx:foodCategory:edit">
                         <th>操作</th>
@@ -65,7 +60,6 @@
             <tbody>
                 <c:forEach items="${page.list}" var="foodCategory">
                     <tr>
-                        <td><a href="${ctx}/wx/foodCategory/form?id=${foodCategory.id}">${foodCategory.id}</a></td>
                         <td>${foodCategory.name}</td>
                         <shiro:hasPermission name="wx:foodCategory:edit">
                             <td>
