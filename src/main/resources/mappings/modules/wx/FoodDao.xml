@@ -102,10 +102,18 @@
         WHERE id = #{id}
     </update>
 
-    <select id="listFoodByCategoryId" resultType="Food">
+    <select id="listFoodByCategoryId" resultType="com.thinkgem.jeesite.modules.wx.entity.Food">
         select <include refid="foodColumns"/>
         FROM wx_food a
         where categoryId = #{categoryId}
+        AND state = true
+    </select>
+
+    <select id="listSuggestFood" resultType="com.thinkgem.jeesite.modules.wx.entity.Food">
+        select <include refid="foodColumns"/>
+        FROM wx_food a
+        where  = recommend = true
+        AND state = true
     </select>
 
     <update id="updateById">

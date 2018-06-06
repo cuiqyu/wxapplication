@@ -18,4 +18,5 @@ public interface FoodDao extends CrudDao<Food> {
 
     int updateById(Food food);
 
+    List<Food> listSuggestFood();
 }

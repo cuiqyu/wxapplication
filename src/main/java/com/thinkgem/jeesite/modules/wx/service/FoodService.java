@@ -61,6 +61,11 @@ public class FoodService extends CrudService<FoodDao, Food> {
         return (result == 1) ? ActionBaseDto.getSuccessInstance() : ActionBaseDto.getFailedInstance();
     }
 
+    /**
+     * 获取某一分类下的菜品
+     * @param categoryId
+     * @return
+     */
     public List<Food> listFoodByCategoryId(String categoryId) {
         if (StringUtils.isEmpty(categoryId)) {
             throw new IllegalArgumentException("分类id不可为空");
@@ -68,4 +73,10 @@ public class FoodService extends CrudService<FoodDao, Food> {
         return foodDao.listFoodByCategoryId(categoryId);
     }
 
+    /**
+     * 获取商家推荐菜品
+     */
+    public List<Food> listSuggestFood() {
+        return foodDao.listSuggestFood();
+    }
 }

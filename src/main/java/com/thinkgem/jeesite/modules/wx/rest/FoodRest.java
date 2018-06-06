@@ -20,8 +20,19 @@ public class FoodRest {
     @Autowired
     private FoodService foodService;
 
+    /**
+     * 获取某一分类下的菜品
+     */
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public List<Food> listFoodByCategoryId(@RequestParam("categoryId") String categoryId) {
         return foodService.listFoodByCategoryId(categoryId);
+    }
+
+    /**
+     * 获取商家推荐菜品
+     */
+    @RequestMapping(value = "suggest", method = RequestMethod.GET)
+    public List<Food> listSuggestFood() {
+        return foodService.listSuggestFood();
     }
 }
