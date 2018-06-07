@@ -5,4 +5,12 @@
     <insert id="addOrder">
 
     </insert>
+
+    <select id="findOrderByWx_id" resultType="com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail">
+        select *
+        from wx_ordel
+        where customer_wx_id = #{wxId}
+        and store_id = #{storeId}
+        order by create_at desc;
+    </select>
 </mapper>

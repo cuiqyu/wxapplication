@@ -1,6 +1,6 @@
 package com.thinkgem.jeesite.modules.wx.entity.vo;
 
-public class OrderVo {
+public class FoodVo {
 
     private String id;
     private int count;

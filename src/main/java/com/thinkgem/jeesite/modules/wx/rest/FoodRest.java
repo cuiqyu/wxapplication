@@ -34,6 +34,6 @@ public class FoodRest {
      */
     @RequestMapping(value = "suggest", method = RequestMethod.GET)
     public List<Food> listSuggestFood(@RequestParam("storeId") String storeId) {
-        return foodService.listSuggestFood();
+        return foodService.listSuggestFood(storeId);
     }
 }

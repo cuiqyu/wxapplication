@@ -18,6 +18,7 @@ public class Order implements Serializable {
     private Date createAt;
     private Date createDay;
     private Date createMonth;
+    private String foodDetail;
 
     public String getId() {
         return id;
@@ -89,5 +90,13 @@ public class Order implements Serializable {
 
     public void setCreateMonth(Date createMonth) {
         this.createMonth = createMonth;
+    }
+
+    public String getFoodDetail() {
+        return foodDetail;
+    }
+
+    public void setFoodDetail(String foodDetail) {
+        this.foodDetail = foodDetail;
     }
 }

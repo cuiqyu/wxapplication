@@ -3,21 +3,19 @@
  */
 package com.thinkgem.jeesite.modules.wx.service;
 
+import com.thinkgem.jeesite.modules.wx.utils.SerializationDefine;
 import com.thinkgem.jeesite.modules.wx.dao.OrderDao;
 import com.thinkgem.jeesite.modules.wx.entity.Food;
 import com.thinkgem.jeesite.modules.wx.entity.Order;
 import com.thinkgem.jeesite.modules.wx.entity.Order2Food;
-import com.thinkgem.jeesite.modules.wx.entity.vo.OrderVo;
+import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
 import com.thinkgem.jeesite.modules.wx.entity.vo.PostOrder;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 菜品Service
@@ -43,13 +41,8 @@ public class OrderService {
     public boolean addOrder(PostOrder postOrder) {
         //校验订单
         List<Food> foodList = foodService.listAllFood(postOrder.getStoreId());
-        List<OrderVo> orderVoList = postOrder.getOrderVoList();
-        List<String> foodIds = new ArrayList<>();
-        for (OrderVo orderVo : orderVoList) {
-            foodIds.add(orderVo.getId());
-        }
-
-
+        Map<String,Integer> foodMap = postOrder.getFoodMap();
+        Set<String> foodIds = foodMap.keySet();
         List<Food> list2 = new ArrayList<>();
         int tag = foodIds.size();
         double amount = 0;
@@ -59,7 +52,8 @@ public class OrderService {
                 if (food.getId().equals(id)) {
                     list2.add(food);
                     tag--;
-                    amount += food.getPrice().doubleValue();
+                    int count = foodMap.get(food.getId());
+                    amount += (food.getPrice().doubleValue())  * count;
                     break;
                 }
             }
@@ -84,8 +78,6 @@ public class OrderService {
         order.setCustomerName(postOrder.getCustomerName());
         order.setCustomerWxId(postOrder.getCustomerWxId());
         order.setStoreId(postOrder.getStoreId());
-        orderDao.addOrder(order);
-
 
         //2.创建订单详情
         List<Order2Food> order2Foods = new ArrayList<>();
@@ -93,20 +85,33 @@ public class OrderService {
             Order2Food order2Food = new Order2Food();
             order2Food.setOrderId(id);
             order2Food.setFoodId(food.getId());
-            order2Food.setFoodCount(1);
+            order2Food.setFoodCount(foodMap.get(food.getId()));
             order2Food.setFoodCategoryId(food.getCategoryId());
             order2Food.setFoodCategoryName(food.getCategoryName());
             order2Food.setFoodPrice(food.getPrice().doubleValue());
             order2Foods.add(order2Food);
         }
-        //orderDao.addOrder2Foods(order2Foods);
+        String foodDetail  = SerializationDefine.List2Str(order2Foods);
+        order.setFoodDetail(foodDetail);
+        orderDao.addOrder(order);
 
 
         //3. 增加菜品的销量
 
 
+
         return true;
 
     }
+
+    /**
+     * 根据点餐的用户wx_id获取订单记录
+     * @return
+     */
+    private List<OrderDetail> findOrderByWx_id(String storeId, String wxId) {
+        return orderDao.findOrderByWx_id(storeId, wxId);
+    }
+
+
 
 }

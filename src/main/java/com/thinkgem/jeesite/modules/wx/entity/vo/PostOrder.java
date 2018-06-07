@@ -1,9 +1,8 @@
 package com.thinkgem.jeesite.modules.wx.entity.vo;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单提交vo
@@ -13,7 +12,7 @@ public class PostOrder implements Serializable {
     private String storeId;
     private String customerName;
     private String customerWxId;
-    private List<OrderVo> orderVoList;
+    private Map<String,Integer> foodMap;
 
     public String getStoreId() {
         return storeId;
@@ -39,11 +38,11 @@ public class PostOrder implements Serializable {
         this.customerWxId = customerWxId;
     }
 
-    public List<OrderVo> getOrderVoList() {
-        return orderVoList;
+    public Map<String, Integer> getFoodMap() {
+        return foodMap;
     }
 
-    public void setOrderVoList(List<OrderVo> orderVoList) {
-        this.orderVoList = orderVoList;
+    public void setFoodMap(Map<String, Integer> foodMap) {
+        this.foodMap = foodMap;
     }
 }

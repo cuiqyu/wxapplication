@@ -2,6 +2,10 @@ package com.thinkgem.jeesite.modules.wx.dao;
 
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wx.entity.Order;
+import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**
@@ -13,5 +17,7 @@ import com.thinkgem.jeesite.modules.wx.entity.Order;
 public interface OrderDao{
 
     boolean addOrder(Order order);
+
+    List<OrderDetail> findOrderByWx_id(@Param("storeId") String storeId, @Param("wxId") String wxId);
 
 }
