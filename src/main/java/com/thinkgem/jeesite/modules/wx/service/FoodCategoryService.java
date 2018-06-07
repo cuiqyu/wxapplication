@@ -88,7 +88,7 @@ public class FoodCategoryService extends CrudService<FoodCategoryDao, FoodCatego
      * 查询所有菜单分类
      * @return
      */
-    public List<FoodCategory> listAllFoodCategory() {
-        return foodCategoryDao.listAllFoodCategory();
+    public List<FoodCategory> listAllFoodCategory(String storeId) {
+        return foodCategoryDao.listAllFoodCategory(storeId);
     }
 }

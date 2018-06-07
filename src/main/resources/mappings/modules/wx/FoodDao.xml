@@ -106,6 +106,7 @@
         select <include refid="foodColumns"/>
         FROM wx_food a
         where categoryId = #{categoryId}
+        AND store_id = #{storeId}
         AND state = true
         ORDER BY sale desc
     </select>
@@ -114,7 +115,16 @@
         select <include refid="foodColumns"/>
         FROM wx_food a
         where recommend = true
+        AND store_id = #{storeId}
         AND state = true
+        ORDER BY sale desc
+    </select>
+
+    <select id="listAllFood" resultType="com.thinkgem.jeesite.modules.wx.entity.Food">
+        select <include refid="foodColumns"/>
+        FROM wx_food a
+        where store_id = #{storeId}
+        and state = true
         ORDER BY sale desc
     </select>
 
