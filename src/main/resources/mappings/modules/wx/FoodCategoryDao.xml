@@ -91,6 +91,7 @@
         SELECT
         <include refid="foodCategoryColumns"/>
         FROM wx_food_category a
+        ORDER BY a.sort,a.create_at
     </select>
     
 </mapper>

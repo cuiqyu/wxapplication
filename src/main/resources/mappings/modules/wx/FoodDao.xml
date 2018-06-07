@@ -107,13 +107,15 @@
         FROM wx_food a
         where categoryId = #{categoryId}
         AND state = true
+        ORDER BY sale desc
     </select>
 
     <select id="listSuggestFood" resultType="com.thinkgem.jeesite.modules.wx.entity.Food">
         select <include refid="foodColumns"/>
         FROM wx_food a
-        where  = recommend = true
+        where recommend = true
         AND state = true
+        ORDER BY sale desc
     </select>
 
     <update id="updateById">
