@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wx.dao.FoodCommentDao">
+
+    <insert id="foodComment">
+        insert into wx_food_comment
+        (id,food_id,store_id,star,content,customer_wx_id,customer_name,create_at)
+        values (#{id},#{foodId},#{storeId},#{star},#{content},#{customerWxId},#{customerName},now())
+    </insert>
+
+    <select id="listFoodCommentByFoodId" resultType="com.thinkgem.jeesite.modules.wx.entity.FoodComment">
+        select *
+        from wx_food_comment
+        where food_id = #{foodId}
+        order by create_at desc;
+    </select>
+</mapper>

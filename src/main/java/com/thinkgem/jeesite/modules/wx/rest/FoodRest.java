@@ -21,18 +21,19 @@ public class FoodRest {
     private FoodService foodService;
 
     /**
-     * 获取某一分类下的菜品
+     * 获取指定店铺下某一分类下的菜品
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public List<Food> listFoodByCategoryId(@RequestParam("categoryId") String categoryId) {
-        return foodService.listFoodByCategoryId(categoryId);
+    public List<Food> listFoodByCategoryId(@RequestParam("storeId") String storeId,
+                                           @RequestParam("categoryId") String categoryId) {
+        return foodService.listFoodByCategoryId(storeId, categoryId);
     }
 
     /**
-     * 获取商家推荐菜品
+     * 获取指定店铺下商家推荐菜品
      */
     @RequestMapping(value = "suggest", method = RequestMethod.GET)
-    public List<Food> listSuggestFood() {
-        return foodService.listSuggestFood();
+    public List<Food> listSuggestFood(@RequestParam("storeId") String storeId) {
+        return foodService.listSuggestFood(storeId);
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wx.dao.OrderDao">
+
+    <insert id="addOrder">
+
+    </insert>
+
+    <select id="findOrderByWx_id" resultType="com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail">
+        select *
+        from wx_ordel
+        where customer_wx_id = #{wxId}
+        and store_id = #{storeId}
+        order by create_at desc;
+    </select>
+</mapper>

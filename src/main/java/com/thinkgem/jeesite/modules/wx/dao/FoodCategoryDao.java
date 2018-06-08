@@ -17,5 +17,5 @@ public interface FoodCategoryDao extends CrudDao<FoodCategory> {
 
     FoodCategory getByName(@Param(value = "name") String name);
 
-    List<FoodCategory> listAllFoodCategory();
+    List<FoodCategory> listAllFoodCategory(String storeId);
 }

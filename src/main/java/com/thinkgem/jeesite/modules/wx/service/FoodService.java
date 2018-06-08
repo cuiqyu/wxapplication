@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.entity.ActionBaseDto;
+import com.thinkgem.jeesite.modules.wx.entity.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,9 @@ public class FoodService extends CrudService<FoodDao, Food> {
 
     @Autowired
     private FoodDao foodDao;
+
+    @Autowired
+    private StoreService storeService;
 
     public Food get(String id) {
         return super.get(id);
@@ -67,17 +71,38 @@ public class FoodService extends CrudService<FoodDao, Food> {
      * @param categoryId
      * @return
      */
-    public List<Food> listFoodByCategoryId(String categoryId) {
+    public List<Food> listFoodByCategoryId(String storeId, String categoryId) {
+        if (StringUtils.isEmpty(storeId)) {
+            throw new IllegalArgumentException("店铺id不可为空");
+        }
         if (StringUtils.isEmpty(categoryId)) {
             throw new IllegalArgumentException("分类id不可为空");
         }
-        return foodDao.listFoodByCategoryId(categoryId);
+        Store store = storeService.findStoreById(storeId);
+        if (store == null) {
+            throw new IllegalArgumentException("店铺不存在");
+        }
+        return foodDao.listFoodByCategoryId(storeId,categoryId);
     }
 
     /**
      * 获取商家推荐菜品
      */
-    public List<Food> listSuggestFood() {
-        return foodDao.listSuggestFood();
+    public List<Food> listSuggestFood(String storeId) {
+        if (StringUtils.isEmpty(storeId)) {
+            throw new IllegalArgumentException("店铺id不可为空");
+        }
+        Store store = storeService.findStoreById(storeId);
+        if (store == null) {
+            throw new IllegalArgumentException("店铺不存在");
+        }
+        return foodDao.listSuggestFood(storeId);
+    }
+
+    /**
+     * 获取所有菜品
+     */
+    public List<Food> listAllFood(String storeId) {
+        return foodDao.listAllFood(storeId);
     }
 }
