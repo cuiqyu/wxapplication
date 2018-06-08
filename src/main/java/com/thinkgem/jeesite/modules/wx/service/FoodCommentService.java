@@ -36,7 +36,7 @@ public class FoodCommentService {
     }
 
     /**
-     *
+     * 根据菜品id获取评论
      */
     public List<FoodComment>  listFoodCommentByFoodId(String foodId) {
        return foodCommentDao.listFoodCommentByFoodId(foodId);
