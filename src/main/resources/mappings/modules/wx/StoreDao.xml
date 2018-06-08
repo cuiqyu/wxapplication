@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wx.dao.StoreDao">
+
+    <select id="findStoreById" resultType="com.thinkgem.jeesite.modules.wx.entity.Store">
+        select *
+        from wx_store
+        where del_flag = false
+        and id = #{storeId}
+    </select>
+
+    <select id="listAllStore" resultType="com.thinkgem.jeesite.modules.wx.entity.Store">
+        select *
+        from wx_store
+        where del_flag = false
+    </select>
+</mapper>

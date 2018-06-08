@@ -5,6 +5,7 @@ import com.thinkgem.jeesite.modules.wx.entity.Store;
 import com.thinkgem.jeesite.modules.wx.entity.vo.PostFoodCommentVo;
 import com.thinkgem.jeesite.modules.wx.service.FoodCommentService;
 import com.thinkgem.jeesite.modules.wx.service.StoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/comment")
 public class FoodCommentRest {
 
+    @Autowired
     private FoodCommentService foodCommentService;
 
     /**

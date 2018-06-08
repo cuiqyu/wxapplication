@@ -3,20 +3,16 @@
  */
 package com.thinkgem.jeesite.modules.wx.service;
 
-import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.wx.dao.FoodCommentDao;
 import com.thinkgem.jeesite.modules.wx.entity.FoodComment;
-import com.thinkgem.jeesite.modules.wx.entity.Store;
 import com.thinkgem.jeesite.modules.wx.entity.vo.PostFoodCommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 店铺Service
+ * 评论Service
  *
  * @author tgp
  * @version 2018-06-04

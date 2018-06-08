@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.wx.service;
 
+import com.thinkgem.jeesite.modules.wx.entity.Store;
 import com.thinkgem.jeesite.modules.wx.utils.SerializationDefine;
 import com.thinkgem.jeesite.modules.wx.dao.OrderDao;
 import com.thinkgem.jeesite.modules.wx.entity.Food;
@@ -10,6 +11,7 @@ import com.thinkgem.jeesite.modules.wx.entity.Order;
 import com.thinkgem.jeesite.modules.wx.entity.Order2Food;
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
 import com.thinkgem.jeesite.modules.wx.entity.vo.PostOrder;
+import com.thinkgem.jeesite.modules.wx.utils.UUIDUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,9 @@ public class OrderService {
     @Autowired
     private FoodService foodService;
 
+    @Autowired
+    private StoreService storeService;
+
     /**
      * 创建订单
      * @param postOrder
@@ -39,25 +44,34 @@ public class OrderService {
      */
     @Transactional
     public boolean addOrder(PostOrder postOrder) {
-        //校验订单
+        //查找本店库里所有菜品id
         List<Food> foodList = foodService.listAllFood(postOrder.getStoreId());
+        //用户点菜菜品id和数量map
         Map<String,Integer> foodMap = postOrder.getFoodMap();
+        //用户点菜菜品id列表
         Set<String> foodIds = foodMap.keySet();
+        //存放用户点菜对应的菜品信息
         List<Food> list2 = new ArrayList<>();
+        //用户提交的菜品id数量
         int tag = foodIds.size();
+        //用户点菜的总金额
         double amount = 0;
 
+        //找到用户提交的id对应的菜品信息
         for (String id : foodIds) {
             for (Food food : foodList) {
                 if (food.getId().equals(id)) {
                     list2.add(food);
+                    //用户提交的菜品id数量，找到一个就减去一个
                     tag--;
+                    //累计金额
                     int count = foodMap.get(food.getId());
                     amount += (food.getPrice().doubleValue())  * count;
                     break;
                 }
             }
         }
+        //用户提交的菜品id数量，存在没有找到的菜品，下单失败
         if (tag != 0) {
             throw new IllegalArgumentException("存在不存在的菜品,下单失败");
         }
@@ -66,7 +80,7 @@ public class OrderService {
 
         //1.创建订单
         Order order = new Order();
-        String id = UUID.randomUUID().toString();//??????
+        String id = UUIDUtils.timeBasedStr();
         order.setId(id);
         order.setAmount(amount);
         order.setCreateAt(new Date());
@@ -108,7 +122,14 @@ public class OrderService {
      * 根据点餐的用户wx_id获取订单记录
      * @return
      */
-    private List<OrderDetail> findOrderByWx_id(String storeId, String wxId) {
+    public List<OrderDetail> findOrderByWx_id(String storeId, String wxId) {
+        if (com.thinkgem.jeesite.common.utils.StringUtils.isEmpty(storeId)) {
+            throw new IllegalArgumentException("店铺id不可为空");
+        }
+        Store store = storeService.findStoreById(storeId);
+        if (store == null) {
+            throw new IllegalArgumentException("店铺不存在");
+        }
         return orderDao.findOrderByWx_id(storeId, wxId);
     }
 

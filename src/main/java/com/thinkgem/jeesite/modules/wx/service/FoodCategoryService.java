@@ -1,11 +1,11 @@
 package com.thinkgem.jeesite.modules.wx.service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import com.thinkgem.jeesite.common.entity.ActionBaseDto;
 import com.thinkgem.jeesite.modules.wx.entity.Food;
+import com.thinkgem.jeesite.modules.wx.entity.Store;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,10 @@ public class FoodCategoryService extends CrudService<FoodCategoryDao, FoodCatego
 
     @Autowired
     private FoodService foodService;
+
+    @Autowired
+    private StoreService storeService;
+
 
     public FoodCategory get(String id) {
         return super.get(id);
@@ -89,6 +93,13 @@ public class FoodCategoryService extends CrudService<FoodCategoryDao, FoodCatego
      * @return
      */
     public List<FoodCategory> listAllFoodCategory(String storeId) {
+        if (com.thinkgem.jeesite.common.utils.StringUtils.isEmpty(storeId)) {
+            throw new IllegalArgumentException("店铺id不可为空");
+        }
+        Store store = storeService.findStoreById(storeId);
+        if (store == null) {
+            throw new IllegalArgumentException("店铺不存在");
+        }
         return foodCategoryDao.listAllFoodCategory(storeId);
     }
 }
