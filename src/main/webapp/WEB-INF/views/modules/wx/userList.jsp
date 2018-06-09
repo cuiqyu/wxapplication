@@ -6,7 +6,14 @@
     <meta name="decorator" content="default"/>
     <script type="text/javascript">
         $(document).ready(function () {
-
+            //清空按钮
+            $("#btnClear").on("click", function() {
+                $("li >input").val("");
+                $("li >select").val("");
+                $("select").each(function(index){
+                    $(".select2-chosen").eq(index).html($(this).children("option:selected").text());
+                });
+            });
         });
 
         function page(n, s) {
@@ -22,9 +29,9 @@
     <ul class="nav nav-tabs">
         <li class="active"><a href="${ctx}/wx/personnel/list">人员列表</a></li>
         <li>
-            <a href="${ctx}/wx/personnel/form?id=${user.id}">人员
-                <shiro:hasPermission name="wx:personnel:edit">${not empty user.id?'修改':'添加'}</shiro:hasPermission>
-                <shiro:lacksPermission name="wx:personnel:edit">查看</shiro:lacksPermission>
+            <a href="${ctx}/wx/personnel/form?id=${user.id}">
+                <shiro:hasPermission name="wx:personnel:edit">${not empty user.id?'人员修改':'人员添加'}</shiro:hasPermission>
+                <shiro:lacksPermission name="wx:personnel:edit">人员查看</shiro:lacksPermission>
             </a>
         </li>
     </ul>
@@ -34,7 +41,12 @@
         <sys:tableSort id="orderBy" name="orderBy" value="${page.orderBy}" callback="page();"/>
         <ul class="ul-form">
             <li><label>登录名：</label><form:input path="loginName" htmlEscape="false" maxlength="50" class="input-medium"/></li>
-            <li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" onclick="return page();"/>
+            <li class="btns">
+                <div class="btn-group">
+                    <button id="btnSubmit" type="submit" class="btn btn-primary" onclick="return page();">查询</button>
+                    <button id="btnClear" type="button" class="btn btn-primary" style="background: #999999;">清空</button>
+                </div>
+            </li>
             <li class="clearfix"></li>
         </ul>
     </form:form>

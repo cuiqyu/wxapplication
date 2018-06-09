@@ -126,6 +126,17 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 		return list;
 	}
+
+    /**
+     * 根据部门id查询未管理店铺的人员信息
+     * @param officeId 部门id
+     * @param storeId 店铺id
+     * @return
+     */
+    public List<User> findUserByOfficeIdAndNoManageStore(String officeId, String storeId) {
+        List<User> list =  list = userDao.findUserByOfficeIdAndNoManageStore(officeId, storeId);
+        return list;
+    }
 	
 	@Transactional(readOnly = false)
 	public void saveUser(User user) {

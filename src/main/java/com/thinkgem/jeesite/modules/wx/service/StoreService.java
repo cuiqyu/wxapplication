@@ -1,13 +1,18 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.wx.service;
 
-import com.thinkgem.jeesite.modules.wx.dao.StoreDao;
-import com.thinkgem.jeesite.modules.wx.entity.Store;
+import java.util.List;
+import java.util.UUID;
+
+import com.thinkgem.jeesite.modules.wx.entity.FoodCategory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.wx.entity.Store;
+import com.thinkgem.jeesite.modules.wx.dao.StoreDao;
 
 /**
  * 店铺Service
@@ -16,7 +21,8 @@ import java.util.List;
  * @version 2018-06-04
  */
 @Service
-public class StoreService {
+@Transactional(readOnly = true)
+public class StoreService extends CrudService<StoreDao, Store> {
 
     @Autowired
     private StoreDao storeDao;
@@ -35,6 +41,42 @@ public class StoreService {
      */
     public Store findStoreById(String storeId) {
         return storeDao.findStoreById(storeId);
+    }
+
+    public Store get(String id) {
+        return super.get(id);
+    }
+
+    public List<Store> findList(Store store) {
+        return super.findList(store);
+    }
+
+    public Page<Store> findPage(Page<Store> page, Store store) {
+        return super.findPage(page, store);
+    }
+
+    @Transactional(readOnly = false)
+    public void save(Store store) {
+        if (StringUtils.isEmpty(store.getId())) {
+            store.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+            storeDao.insert(store);
+        } else {
+            storeDao.update(store);
+        }
+    }
+
+    @Transactional(readOnly = false)
+    public void delete(Store store) {
+        super.delete(store);
+    }
+
+    public Store getByName(String name) {
+        if (StringUtils.isEmpty(name)) {
+            return null;
+        }
+
+        Store store = storeDao.getByName(name);
+        return store;
     }
 
 }

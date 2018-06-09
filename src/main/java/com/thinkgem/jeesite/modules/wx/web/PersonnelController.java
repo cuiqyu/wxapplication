@@ -60,10 +60,10 @@ public class PersonnelController extends BaseController {
     @RequestMapping(value = "form")
     public String form(User user, Model model) {
         if (user.getCompany() == null || user.getCompany().getId() == null) {
-            user.setCompany(UserUtils.getUser().getCompany());
+            user.setCompany(new Office("1"));
         }
         if (user.getOffice() == null || user.getOffice().getId() == null) {
-            user.setOffice(UserUtils.getUser().getOffice());
+            user.setOffice(new Office("d2716364f6d247af8748d873b9ace9cb"));
         }
 
         List<Role> allRoles = systemService.findAllRole();

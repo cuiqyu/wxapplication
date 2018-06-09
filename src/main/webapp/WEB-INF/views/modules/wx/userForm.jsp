@@ -35,9 +35,12 @@
 <body>
 <ul class="nav nav-tabs">
     <li><a href="${ctx}/wx/personnel/list">人员列表</a></li>
-    <li class="active"><a href="${ctx}/wx/personnel/form?id=${user.id}">人员<shiro:hasPermission
-            name="wx:personnel:edit">${not empty user.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission
-            name="wx:personnel:edit">查看</shiro:lacksPermission></a></li>
+    <li class="active">
+        <a href="${ctx}/wx/personnel/form?id=${user.id}">
+            <shiro:hasPermission name="wx:personnel:edit">${not empty user.id?'人员修改':'人员添加'}</shiro:hasPermission>
+            <shiro:lacksPermission name="wx:personnel:edit">人员查看</shiro:lacksPermission>
+        </a>
+    </li>
 </ul>
 <br/>
 <form:form id="inputForm" modelAttribute="user" action="${ctx}/wx/personnel/save" method="post" class="form-horizontal">
