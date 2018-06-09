@@ -4,7 +4,11 @@
     
     <sql id="foodCategoryColumns">
         a.id AS "id",
-        a.name AS "name"
+        a.name AS "name",
+        a.sort AS "sort",
+        a.create_at AS "createAt",
+        a.update_at AS "updateAt",
+        a.store_id AS "storeId"
     </sql>
     
     <sql id="foodCategoryJoins">
@@ -32,6 +36,12 @@
                     <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
                     <if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
                     <if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+            </if>
+            <if test="storeId != null and storeId != ''">
+                AND a.store_id = #{storeId}
+            </if>
+            <if test="sort != null">
+                AND a.sort = #{sort}
             </if>
         </where>
         <choose>
@@ -65,20 +75,36 @@
         FROM wx_food_category a
         where a.name = #{name}
     </select>
+    <select id="getByNameAndStoreId" resultType="com.thinkgem.jeesite.modules.wx.entity.FoodCategory">
+        SELECT
+        <include refid="foodCategoryColumns"/>
+        FROM wx_food_category a
+        where a.name = #{name} AND a.store_id = #{storeId}
+    </select>
 
     <insert id="insert">
         INSERT INTO wx_food_category(
             id,
-            name
+            name,
+            sort,
+            create_at,
+            update_at,
+            store_id
         ) VALUES (
             #{id},
-            #{name}
+            #{name},
+            #{sort},
+            now(),
+            now(),
+            #{storeId}
         )
     </insert>
     
     <update id="update">
         UPDATE wx_food_category SET     
-            name = #{name}
+            name = #{name},
+            sort = #{sort},
+            update_at = now()
         WHERE id = #{id}
     </update>
     
@@ -92,7 +118,7 @@
         <include refid="foodCategoryColumns"/>
         FROM wx_food_category a
         where store_id = #{storeId}
-        ORDER BY a.sort,a.create_at
+        ORDER BY a.sort,a.update_at
     </select>
-    
+
 </mapper>

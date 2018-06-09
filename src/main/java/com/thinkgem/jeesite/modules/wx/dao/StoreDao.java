@@ -22,4 +22,6 @@ public interface StoreDao extends CrudDao<Store> {
 
     Store getByName(@Param(value = "name") String name);
 
+    Store getByUserId(@Param(value = "userId") String userId);
+
 }

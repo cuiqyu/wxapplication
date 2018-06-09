@@ -26,7 +26,12 @@
 <body>
     <ul class="nav nav-tabs">
         <li class="active"><a href="${ctx}/wx/food/">菜品列表</a></li>
-        <shiro:hasPermission name="wx:food:edit"><li><a href="${ctx}/wx/food/form">菜品添加</a></li></shiro:hasPermission>
+        <li>
+            <a href="${ctx}/wx/food/form?id=${food.id}">
+                <shiro:hasPermission name="wx:food:edit">${not empty food.id?'菜品修改':'菜品添加'}</shiro:hasPermission>
+                <shiro:lacksPermission name="wx:food:edit">菜品查看</shiro:lacksPermission>
+            </a>
+        </li>
     </ul>
     <form:form id="searchForm" modelAttribute="food" action="${ctx}/wx/food/" method="post" class="breadcrumb form-search">
         <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

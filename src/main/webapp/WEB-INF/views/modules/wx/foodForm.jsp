@@ -58,9 +58,9 @@
 <ul class="nav nav-tabs">
     <li><a href="${ctx}/wx/food/">菜品列表</a></li>
     <li class="active">
-        <a href="${ctx}/wx/food/form?id=${food.id}">菜品
-            <shiro:hasPermission name="wx:food:edit">${not empty food.id?'修改':'添加'}</shiro:hasPermission>
-            <shiro:lacksPermission name="wx:food:edit">查看</shiro:lacksPermission>
+        <a href="${ctx}/wx/food/form?id=${food.id}">
+            <shiro:hasPermission name="wx:food:edit">${not empty food.id?'菜品修改':'菜品添加'}</shiro:hasPermission>
+            <shiro:lacksPermission name="wx:food:edit">菜品查看</shiro:lacksPermission>
         </a>
     </li>
 </ul>

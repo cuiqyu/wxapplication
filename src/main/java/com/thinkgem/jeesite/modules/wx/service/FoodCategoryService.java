@@ -49,6 +49,15 @@ public class FoodCategoryService extends CrudService<FoodCategoryDao, FoodCatego
         return foodCategory;
     }
 
+    public FoodCategory getByNameAndStoreId(String name, String storeId) {
+        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(storeId)) {
+            return null;
+        }
+
+        FoodCategory foodCategory = foodCategoryDao.getByNameAndStoreId(name, storeId);
+        return foodCategory;
+    }
+
     public List<FoodCategory> findList(FoodCategory foodCategory) {
         return super.findList(foodCategory);
     }
@@ -62,8 +71,9 @@ public class FoodCategoryService extends CrudService<FoodCategoryDao, FoodCatego
         if (StringUtils.isEmpty(foodCategory.getId())) {
             foodCategory.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             foodCategoryDao.insert(foodCategory);
+        } else {
+            foodCategoryDao.update(foodCategory);
         }
-        foodCategoryDao.update(foodCategory);
     }
     
     @Transactional(readOnly = false)

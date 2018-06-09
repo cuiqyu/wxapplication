@@ -79,4 +79,13 @@ public class StoreService extends CrudService<StoreDao, Store> {
         return store;
     }
 
+    public Store getByUserId(String userId) {
+        if (StringUtils.isEmpty(userId)) {
+            return null;
+        }
+
+        Store store = storeDao.getByUserId(userId);
+        return store;
+    }
+
 }

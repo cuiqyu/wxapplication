@@ -5,6 +5,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.common.entity.ActionBaseDto;
 import com.thinkgem.jeesite.common.entity.ResponseData;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wx.entity.Store;
+import com.thinkgem.jeesite.modules.wx.service.StoreService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +27,9 @@ import com.thinkgem.jeesite.modules.wx.entity.FoodCategory;
 import com.thinkgem.jeesite.modules.wx.service.FoodCategoryService;
 
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 菜品分类Controller
@@ -36,6 +43,9 @@ public class FoodCategoryController extends BaseController {
 
     @Autowired
     private FoodCategoryService foodCategoryService;
+
+    @Autowired
+    private StoreService storeService;
 
     @ModelAttribute
     public FoodCategory get(@RequestParam(required = false) String id) {
@@ -55,7 +65,30 @@ public class FoodCategoryController extends BaseController {
     @RequiresPermissions("wx:foodCategory:view")
     @RequestMapping(value = {"list", ""})
     public String list(FoodCategory foodCategory, HttpServletRequest request, HttpServletResponse response, Model model) {
+        // 判断当前用户的是否是店长，根据部门id为"d2716364f6d247af8748d873b9ace9cb"
+        String officeId = UserUtils.getUser().getOffice().getId();
+        if ("d2716364f6d247af8748d873b9ace9cb".equals(officeId)) {
+            // 查询出店铺id
+            Store store = storeService.getByUserId(UserUtils.getUser().getId());
+            if (null == store) {
+                logger.error("你好，你还不是某店铺的管理员，或者你所管理的店铺已被超级管理员删除，请联系超级管理员！");
+                model.addAttribute("message", "你好，你还不是某店铺的管理员，或者你所管理的店铺已被超级管理员删除，请联系超级管理员！");
+                return "modules/wx/noOperationPermissions";
+            }
+            foodCategory.setIsShopowner(true);
+            foodCategory.setStoreId(store.getId());
+        }
+
         Page<FoodCategory> page = foodCategoryService.findPage(new Page<FoodCategory>(request, response), foodCategory);
+        if (!foodCategory.getIsShopowner()) { // 查询出所有的店铺
+            Map<String, String> storeMap = new HashMap<String, String>();
+            List<Store> storeList = storeService.listAllStore();
+            for (Store store : storeList) {
+                storeMap.put(store.getId(), store.getName());
+            }
+            model.addAttribute("storeMap", storeMap);
+        }
+
         model.addAttribute("page", page);
         return "modules/wx/foodCategoryList";
     }
@@ -66,6 +99,25 @@ public class FoodCategoryController extends BaseController {
     @RequiresPermissions("wx:foodCategory:view")
     @RequestMapping(value = "form")
     public String form(FoodCategory foodCategory, Model model) {
+        // 判断当前用户的是否是店长，根据部门id为"d2716364f6d247af8748d873b9ace9cb"
+        String officeId = UserUtils.getUser().getOffice().getId();
+        if ("d2716364f6d247af8748d873b9ace9cb".equals(officeId)) {
+            // 查询出店铺id
+            Store store = storeService.getByUserId(UserUtils.getUser().getId());
+            if (null == store) {
+                logger.error("你好，你还不是某店铺的管理员，或者你所管理的店铺已被超级管理员删除，请联系超级管理员！");
+                model.addAttribute("message", "你好，你还不是某店铺的管理员，或者你所管理的店铺已被超级管理员删除，请联系超级管理员！");
+                return "modules/wx/noOperationPermissions";
+            }
+            foodCategory.setIsShopowner(true);
+            foodCategory.setStoreId(store.getId());
+        }
+
+        if (!foodCategory.getIsShopowner()) { // 查询出所有的店铺
+            List<Store> storeList = storeService.listAllStore();
+            model.addAttribute("storeList", storeList);
+        }
+
         model.addAttribute("foodCategory", foodCategory);
         return "modules/wx/foodCategoryForm";
     }
@@ -76,8 +128,8 @@ public class FoodCategoryController extends BaseController {
     @RequiresPermissions("wx:foodCategory:edit")
     @RequestMapping(value = "save")
     public String save(FoodCategory foodCategory, Model model, RedirectAttributes redirectAttributes) {
-        if (!beanValidator(model, foodCategory)) {
-            return form(foodCategory, model);
+        if (null == foodCategory.getSort()) {
+            foodCategory.setSort(0); // 默认排序为0
         }
         foodCategoryService.save(foodCategory);
         addMessage(redirectAttributes, "保存菜品分类成功");
@@ -113,9 +165,10 @@ public class FoodCategoryController extends BaseController {
         ResponseData response = new ResponseData();
         try {
             String categoryName = URLDecoder.decode(request.getParameter("categoryName"), "UTF-8");
+            String storeId = URLDecoder.decode(request.getParameter("storeId"), "UTF-8");
             String id = URLDecoder.decode(request.getParameter("id"), "UTF-8");
-            if (StringUtils.isNotEmpty(categoryName)) {
-                FoodCategory foodCategory = foodCategoryService.getByName(categoryName);
+            if (StringUtils.isNotEmpty(categoryName) && StringUtils.isNotEmpty(storeId)) {
+                FoodCategory foodCategory = foodCategoryService.getByNameAndStoreId(categoryName, storeId);
                 if (null != foodCategory) {
                     if (StringUtils.isNotEmpty(id)) { // 修改菜品分类时，不校验当前菜品分类
                         if (!id.equals(foodCategory.getId())) {

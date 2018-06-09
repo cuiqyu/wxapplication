@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+import java.util.Date;
+
 /**
  * 菜品分类Entity
  * @author tgp
@@ -15,7 +17,15 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class FoodCategory extends DataEntity<FoodCategory> {
     
     private static final long serialVersionUID = 1L;
-    private String name;        // name
+
+    private String name; // 分类名称
+    private Integer sort; // 排序
+    private Date createAt; // 创建时间
+    private Date updateAt; // 更新时间
+    private String storeId; // 店铺id
+
+    // 附加字段
+    private boolean isShopowner; // 是否是店长
     
     public FoodCategory() {
         super();
@@ -25,7 +35,6 @@ public class FoodCategory extends DataEntity<FoodCategory> {
         super(id);
     }
 
-    @Length(min=1, max=64, message="name长度必须介于 1 和 64 之间")
     public String getName() {
         return name;
     }
@@ -33,5 +42,45 @@ public class FoodCategory extends DataEntity<FoodCategory> {
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+    public boolean getIsShopowner() {
+        return isShopowner;
+    }
+
+    public void setIsShopowner(boolean shopowner) {
+        isShopowner = shopowner;
+    }
+
 }

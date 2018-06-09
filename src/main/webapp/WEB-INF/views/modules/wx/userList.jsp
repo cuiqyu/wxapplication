@@ -65,7 +65,7 @@
             <tr>
                 <td><a href="${ctx}/wx/personnel/form?id=${user.id}">${user.loginName}</a></td>
                 <td>${user.name}</td>
-                <shiro:hasPermission name="sys:user:edit">
+                <shiro:hasPermission name="wx:personnel:edit">
                     <td>
                         <a href="${ctx}/wx/personnel/form?id=${user.id}">修改</a>
                         <a href="${ctx}/wx/personnel/delete?id=${user.id}" onclick="return confirmx('确认要删除该用户吗？', this.href)">删除</a>
