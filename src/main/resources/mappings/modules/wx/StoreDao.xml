@@ -16,14 +16,14 @@
     <select id="findStoreById" resultType="com.thinkgem.jeesite.modules.wx.entity.Store">
         select *
         from wx_store
-        where del_flag = false
+        where del_flag = 0
         and id = #{storeId}
     </select>
 
     <select id="listAllStore" resultType="com.thinkgem.jeesite.modules.wx.entity.Store">
         select *
         from wx_store
-        where del_flag = false
+        where del_flag = 0
     </select>
 
 
