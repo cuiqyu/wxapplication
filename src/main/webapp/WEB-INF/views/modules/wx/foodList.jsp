@@ -14,6 +14,26 @@
                     $(".select2-chosen").eq(index).html($(this).children("option:selected").text());
                 });
             });
+
+            // 监控店铺变化
+            $("#storeId").on("change", function() {
+                $("#categoryId").empty();
+                $("#categoryId").append("<option value = \"\">--请选择--</option>");
+                $(".categoryDiv .select2-chosen").html("--请选择--");
+
+                var storeId = $("#storeId").val();
+                if ("" != storeId) {
+                    // 查询改店铺下的所有分类信息
+                    var requestUrl = "${ctx}/wx/food/getCategoryList?storeId=" + encodeURI(encodeURI(storeId));
+                    var data = $.ajax({url: requestUrl, dataType: 'json', async: false});
+                    data = eval('(' + data.responseText + ')');
+                    if (data != null && data != undefined) {
+                        for (var i = 0; i < data.length; i++) {
+                            $("#categoryId").append("<option value = \"" + data[i].id + "\">" + data[i].name + "</option>");
+                        }
+                    }
+                }
+            });
         });
         function page(n,s){
             $("#pageNo").val(n);
@@ -40,7 +60,22 @@
             <li><label>菜品名称：</label>
                 <form:input path="name" htmlEscape="false" maxlength="64" class="input-medium"/>
             </li>
-            <li><label>菜品分类：</label>
+            <c:choose>
+                <c:when test="${food.isShopowner}"><%-- 店长 --%>
+                    <form:hidden path="storeId"/>
+                </c:when>
+                <c:otherwise><%-- 管理员 --%>
+                    <li><label>选择店铺：</label>
+                        <form:select path="storeId" class="input-medium required">
+                            <form:option value="">--请选择--</form:option>
+                            <c:forEach items="${storeMap}" var="store">
+                                <form:option value="${store.key}">${store.value}</form:option>
+                            </c:forEach>
+                        </form:select>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+            <li class="categoryDiv"><label>菜品分类：</label>
                 <form:select path="categoryId" class="input-small required">
                     <form:option value="">--请选择--</form:option>
                     <c:forEach items="${categoryList}" var="category">
@@ -76,33 +111,43 @@
         <thead>
             <tr>
                 <th>菜品名称</th>
+                <c:if test="${!food.isShopowner}">
+                    <th>所在店铺</th>
+                </c:if>
                 <th>菜品分类</th>
                 <th>菜品图片</th>
                 <th>菜品价格</th>
                 <th>是否推荐</th>
                 <th>上架状态</th>
+                <th>单位</th>
+                <th>销量</th>
                 <shiro:hasPermission name="wx:food:edit"><th>操作</th></shiro:hasPermission>
             </tr>
         </thead>
         <tbody>
-        <c:forEach items="${list}" var="food">
+        <c:forEach items="${list}" var="foodva">
             <tr>
-                <td>${food.name}</td>
-                <td>${food.categoryName}</td>
-                <td><img src="${food.picture}" style="max-width:120px; max-height: 100px"></td>
-                <td>${food.price}</td>
-                <td>${food.recommend ? '是' : '否'}</td>
-                <td>${food.state ? '已上架' : '已下架'}</td>
+                <td>${foodva.name}</td>
+                <c:if test="${!food.isShopowner}">
+                    <td>${storeMap.get(foodva.storeId)}</td>
+                </c:if>
+                <td>${foodva.categoryName}</td>
+                <td><img src="${foodva.picture}" style="max-width:120px; max-height: 100px"></td>
+                <td>${foodva.price}</td>
+                <td>${foodva.recommend ? '是' : '否'}</td>
+                <td>${foodva.state ? '已上架' : '已下架'}</td>
+                <td>${foodva.unit}</td>
+                <td>${foodva.sale}</td>
                 <shiro:hasPermission name="wx:food:edit">
                     <td>
-                        <a href="${ctx}/wx/food/form?id=${food.id}">修改</a>
+                        <a href="${ctx}/wx/food/form?id=${foodva.id}">修改</a>
                         <c:choose>
-                            <c:when test="${food.recommend}"><a href="${ctx}/wx/food/cancelRecommend?id=${food.id}" onclick="return confirmx('确认是否取消该商品推荐？', this.href)">取消推荐</a></c:when>
-                            <c:otherwise><a href="${ctx}/wx/food/recommend?id=${food.id}" onclick="return confirmx('确认推荐该商品？', this.href)">推荐</a></c:otherwise>
+                            <c:when test="${foodva.recommend}"><a href="${ctx}/wx/food/cancelRecommend?id=${foodva.id}" onclick="return confirmx('确认是否取消该商品推荐？', this.href)">取消推荐</a></c:when>
+                            <c:otherwise><a href="${ctx}/wx/food/recommend?id=${foodva.id}" onclick="return confirmx('确认推荐该商品？', this.href)">推荐</a></c:otherwise>
                         </c:choose>
                         <c:choose>
-                            <c:when test="${food.state}"><a href="${ctx}/wx/food/undercarriage?id=${food.id}" onclick="return confirmx('确认下架该商品，下架后前台将不展示该商品？', this.href)">下架</a></c:when>
-                            <c:otherwise><a href="${ctx}/wx/food/grounding?id=${food.id}" onclick="return confirmx('确认上架该商品，上架后台该商品将会在前端展示？', this.href)">上架</a></c:otherwise>
+                            <c:when test="${foodva.state}"><a href="${ctx}/wx/food/undercarriage?id=${foodva.id}" onclick="return confirmx('确认下架该商品，下架后前台将不展示该商品？', this.href)">下架</a></c:when>
+                            <c:otherwise><a href="${ctx}/wx/food/grounding?id=${foodva.id}" onclick="return confirmx('确认上架该商品，上架后台该商品将会在前端展示？', this.href)">上架</a></c:otherwise>
                         </c:choose>
                     </td>
                 </shiro:hasPermission>

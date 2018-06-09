@@ -5,8 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.common.entity.ActionBaseDto;
 import com.thinkgem.jeesite.common.utils.ExceptionUtil;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wx.entity.FoodCategory;
+import com.thinkgem.jeesite.modules.wx.entity.Store;
 import com.thinkgem.jeesite.modules.wx.service.FoodCategoryService;
+import com.thinkgem.jeesite.modules.wx.service.StoreService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -23,9 +27,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wx.entity.Food;
 import com.thinkgem.jeesite.modules.wx.service.FoodService;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URLDecoder;
+import java.util.*;
 
 /**
  * 菜品Controller
@@ -41,6 +44,9 @@ public class FoodController extends BaseController {
 
     @Autowired
     private FoodCategoryService foodCategoryService;
+
+    @Autowired
+    private StoreService storeService;
 
     // 商品推荐状态
     public static final Map<Boolean, String> recommendedStateMap = new LinkedHashMap<>();
@@ -73,6 +79,36 @@ public class FoodController extends BaseController {
     @RequiresPermissions("wx:food:view")
     @RequestMapping(value = {"list", ""})
     public String list(Food food, HttpServletRequest request, HttpServletResponse response, Model model) {
+        List<FoodCategory> categoryList = new ArrayList<>();
+        Map<String, String> storeMap = new HashMap<String, String>();
+        // 判断当前用户是否是店长
+        String officeId = UserUtils.getUser().getOffice().getId();
+        if ("d2716364f6d247af8748d873b9ace9cb".equals(officeId)) {
+            // 查询出店铺id
+            Store store = storeService.getByUserId(UserUtils.getUser().getId());
+            if (null == store) {
+                logger.error("你好，你还不是某店铺的管理员，或者你所管理的店铺已被超级管理员删除，请联系超级管理员！");
+                model.addAttribute("message", "你好，你还不是某店铺的管理员，或者你所管理的店铺已被超级管理员删除，请联系超级管理员！");
+                return "modules/wx/noOperationPermissions";
+            }
+            food.setIsShopowner(true);
+            food.setStoreId(store.getId());
+            storeMap.put(store.getId(), store.getName());
+        }
+
+        if (StringUtils.isNotEmpty(food.getStoreId())) {
+            // 查询出当前的所有分类
+            categoryList = foodCategoryService.listAllFoodCategory(food.getStoreId());
+        }
+
+        if (!food.getIsShopowner()) { // 查询出所有的店铺
+            List<Store> storeList = storeService.listAllStore();
+            for (Store store : storeList) {
+                storeMap.put(store.getId(), store.getName());
+            }
+            model.addAttribute("storeMap", storeMap);
+        }
+
         Page<Food> page = foodService.findPage(new Page<Food>(request, response), food);
         List<Food> list = page.getList();
         for (Food foo : list) {
@@ -82,7 +118,6 @@ public class FoodController extends BaseController {
             }
         }
 
-        List<FoodCategory> categoryList = foodCategoryService.findList(null);
         model.addAttribute("page", page);
         model.addAttribute("list", list);
         model.addAttribute("categoryList", categoryList);
@@ -102,12 +137,43 @@ public class FoodController extends BaseController {
         if (null == food.getState()) {
             food.setState(true);
         }
+        List<FoodCategory> categoryList = new ArrayList<>();
 
-        List<FoodCategory> categoryList = foodCategoryService.findList(null);
+        // 判断当前用户是否是店长
+        String officeId = UserUtils.getUser().getOffice().getId();
+        if ("d2716364f6d247af8748d873b9ace9cb".equals(officeId)) {
+            // 查询出店铺id
+            Store store = storeService.getByUserId(UserUtils.getUser().getId());
+            if (null == store) {
+                logger.error("你好，你还不是某店铺的管理员，或者你所管理的店铺已被超级管理员删除，请联系超级管理员！");
+                model.addAttribute("message", "你好，你还不是某店铺的管理员，或者你所管理的店铺已被超级管理员删除，请联系超级管理员！");
+                return "modules/wx/noOperationPermissions";
+            }
+            food.setIsShopowner(true);
+            food.setStoreId(store.getId());
+        }
+
+        if (StringUtils.isNotEmpty(food.getStoreId())) {
+            // 查询出当前的所有分类
+            categoryList = foodCategoryService.listAllFoodCategory(food.getStoreId());
+        }
+
+        if (!food.getIsShopowner()) { // 查询出所有的店铺
+            Map<String, String> storeMap = new HashMap<String, String>();
+            List<Store> storeList = storeService.listAllStore();
+            for (Store store : storeList) {
+                storeMap.put(store.getId(), store.getName());
+            }
+            model.addAttribute("storeMap", storeMap);
+        }
+
+
         model.addAttribute("food", food);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("recommendedStateMap", recommendedStateMap);
         model.addAttribute("shelfStateMap", shelfStateMap);
+
+
         return "modules/wx/foodForm";
     }
 
@@ -245,5 +311,25 @@ public class FoodController extends BaseController {
         }
         return "redirect:" + Global.getAdminPath() + "/wx/food/?repage";
     }
+
+    /**
+     * 根据店铺id查询改店铺下的分类
+     * @param request
+     * @return
+     */
+    @RequiresPermissions("wx:food:view")
+    @RequestMapping(value = "/getCategoryList")
+    @ResponseBody
+    public List<FoodCategory> getCategoryList(HttpServletRequest request){
+        List<FoodCategory> foodCategoryList = new ArrayList<>();
+        try {
+            String storeId = URLDecoder.decode(request.getParameter("storeId"), "UTF-8");
+            foodCategoryList = foodCategoryService.listAllFoodCategory(storeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return foodCategoryList;
+    }
+
 
 }

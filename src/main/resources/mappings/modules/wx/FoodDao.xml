@@ -9,7 +9,10 @@
         a.picture AS "picture",
         a.price AS "price",
         a.recommend AS "recommend",
-        a.state AS "state"
+        a.state AS "state",
+        a.sale AS "sale",
+        a.unit AS "unit",
+        a.store_id AS "storeId"
     </sql>
     <sql id="foodJoins">
     </sql>
@@ -44,6 +47,9 @@
             <if test="state != null">
                 AND a.state = #{state}
             </if>
+            <if test="storeId != null and storeId != ''">
+                AND a.store_id = #{storeId}
+            </if>
         </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -76,7 +82,10 @@
             picture,
             price,
             recommend,
-            state
+            state,
+            sale,
+            unit,
+            store_id
         ) VALUES (
             #{id},
             #{categoryId},
@@ -84,7 +93,10 @@
             #{picture},
             #{price},
             #{recommend},
-            #{state}
+            #{state},
+            #{sale},
+            #{unit},
+            #{storeId}
         )
     </insert>
     <update id="update">
@@ -94,7 +106,10 @@
             picture = #{picture},
             price = #{price},
             recommend = #{recommend},
-            state = #{state}
+            state = #{state},
+            sale = #{sale},
+            unit = #{unit},
+            store_id = #{storeId}
         WHERE id = #{id}
     </update>
     <update id="delete">
@@ -148,6 +163,15 @@
             </if>
             <if test="state != null">
                 state = #{state},
+            </if>
+            <if test="sale != null">
+                sale = #{sale},
+            </if>
+            <if test="sale != null and unit != ''">
+                unit = #{unit},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId},
             </if>
         </set>
         WHERE id = #{id}

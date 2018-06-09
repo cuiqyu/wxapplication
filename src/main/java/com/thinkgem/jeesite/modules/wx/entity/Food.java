@@ -19,9 +19,13 @@ public class Food extends DataEntity<Food> {
     private BigDecimal price; // 价格
     private Boolean recommend; // 是否推荐
     private Boolean state; // 上架状态
+    private int sale; // 销量
+    private String unit; // 单位
+    private String storeId; // 店铺id
 
     // 附加字段
     private String categoryName; // 分类名称
+    private boolean isShopowner; // 是否是店长
     
     public Food() {
         super();
@@ -90,6 +94,38 @@ public class Food extends DataEntity<Food> {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public int getSale() {
+        return sale;
+    }
+
+    public void setSale(int sale) {
+        this.sale = sale;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+    public boolean getIsShopowner() {
+        return isShopowner;
+    }
+
+    public void setIsShopowner(boolean shopowner) {
+        isShopowner = shopowner;
     }
 
 }

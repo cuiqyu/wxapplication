@@ -51,6 +51,27 @@
                     }
                 }
             });
+
+            // 监控店铺变化
+            $("#storeId").on("change", function() {
+                $("#categoryId").empty();
+                $("#categoryId").append("<option value = \"\">--请选择--</option>");
+                $(".categoryDiv .select2-chosen").html("--请选择--");
+
+                var storeId = $("#storeId").val();
+                if ("" != storeId) {
+                    // 查询改店铺下的所有分类信息
+                    var requestUrl = "${ctx}/wx/food/getCategoryList?storeId=" + encodeURI(encodeURI(storeId));
+                    var data = $.ajax({url: requestUrl, dataType: 'json', async: false});
+                    data = eval('(' + data.responseText + ')');
+                    if (data != null && data != undefined) {
+                        for (var i = 0; i < data.length; i++) {
+                            $("#categoryId").append("<option value = \"" + data[i].id + "\">" + data[i].name + "</option>");
+                        }
+                    }
+                }
+            });
+
         });
     </script>
 </head>
@@ -68,9 +89,28 @@
 <form:form id="inputForm" modelAttribute="food" action="${ctx}/wx/food/save" method="post" class="form-horizontal">
     <form:hidden path="id"/>
     <sys:message content="${message}"/>
+    <c:choose>
+        <c:when test="${food.isShopowner}"><%-- 店长 --%>
+            <form:hidden path="storeId"/>
+        </c:when>
+        <c:otherwise><%-- 管理员 --%>
+            <div class="control-group">
+                <label class="control-label">选择店铺：</label>
+                <div class="controls">
+                    <form:select path="storeId" class="input-medium required">
+                        <form:option value="">--请选择--</form:option>
+                        <c:forEach items="${storeMap}" var="store">
+                            <form:option value="${store.key}">${store.value}</form:option>
+                        </c:forEach>
+                    </form:select>
+                    <span class="help-inline"><font color="red">*</font> </span>
+                </div>
+            </div>
+        </c:otherwise>
+    </c:choose>
     <div class="control-group">
         <label class="control-label">菜品分类：</label>
-        <div class="controls">
+        <div class="controls categoryDiv">
             <form:select path="categoryId" class="input-medium required">
                 <form:option value="">--请选择--</form:option>
                 <c:forEach items="${categoryList}" var="category">
@@ -113,6 +153,13 @@
         <div class="controls">
             <form:radiobuttons path="state" items="${shelfStateMap}" class="input-medium required"/>
             <span class="help-inline"> 如果是下架状态，该菜品将不在前台展示 </span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">单位：</label>
+        <div class="controls">
+            <form:input path="unit" htmlEscape="false" placeholder="单位：如瓶/件/个/份" maxlength="6" class="input-medium required"/>
+            <span class="help-inline"><font color="red">*</font> </span>
         </div>
     </div>
     <div class="form-actions">
