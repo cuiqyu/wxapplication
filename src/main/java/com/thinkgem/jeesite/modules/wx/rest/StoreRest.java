@@ -2,6 +2,7 @@ package com.thinkgem.jeesite.modules.wx.rest;
 
 import com.thinkgem.jeesite.modules.wx.entity.Store;
 import com.thinkgem.jeesite.modules.wx.service.StoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequestMapping("/api/store")
 public class StoreRest {
 
+    @Autowired
     private StoreService storeService;
 
     /**
