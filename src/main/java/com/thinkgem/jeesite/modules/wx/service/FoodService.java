@@ -67,22 +67,18 @@ public class FoodService extends CrudService<FoodDao, Food> {
     }
 
     /**
-     * 获取某一分类下的菜品
-     * @param categoryId
+     * 获取某一店铺的所有菜品
      * @return
      */
-    public List<Food> listFoodByCategoryId(String storeId, String categoryId) {
+    public List<Food> listFood(String storeId) {
         if (StringUtils.isEmpty(storeId)) {
             throw new IllegalArgumentException("店铺id不可为空");
-        }
-        if (StringUtils.isEmpty(categoryId)) {
-            throw new IllegalArgumentException("分类id不可为空");
         }
         Store store = storeService.findStoreById(storeId);
         if (store == null) {
             throw new IllegalArgumentException("店铺不存在");
         }
-        return foodDao.listFoodByCategoryId(storeId,categoryId);
+        return foodDao.listAllFood(storeId);
     }
 
     /**

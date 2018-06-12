@@ -21,12 +21,11 @@ public class FoodRest {
     private FoodService foodService;
 
     /**
-     * 获取指定店铺下某一分类下的菜品
+     * 获取指定店铺下菜品
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public List<Food> listFoodByCategoryId(@RequestParam("storeId") String storeId,
-                                           @RequestParam("categoryId") String categoryId) {
-        return foodService.listFoodByCategoryId(storeId, categoryId);
+    public List<Food> listFood(@RequestParam("storeId") String storeId) {
+        return foodService.listFood(storeId);
     }
 
     /**
