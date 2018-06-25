@@ -72,37 +72,37 @@ public class Test extends DataEntity<Test> {
 	}
 
 	@SupCol(text="创建时间", sort = 1, groupId="date", width="125px")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getCreateDate() {
 		return createDate;
 	}
 
 	@SupCol(text="修改时间", sort = 2, groupId="date", width="125px")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getUpdateDate() {
 		return updateDate;
 	}
 	
 	@SupCol(text="创建时间2", sort = 2, groupId="date2", width="125px")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getCreateDate2() {
 		return createDate;
 	}
 
 	@SupCol(text="修改时间2", sort = 1, groupId="date2", width="125px")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getUpdateDate2() {
 		return updateDate;
 	}
 	
 	@SupCol(text="创建时间3", sort = 200, groupId="date3", width="125px")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getCreateDate3() {
 		return createDate;
 	}
 
 	@SupCol(text="修改时间3", sort = 1, groupId="date3", width="125px")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getUpdateDate3() {
 		return updateDate;
 	}

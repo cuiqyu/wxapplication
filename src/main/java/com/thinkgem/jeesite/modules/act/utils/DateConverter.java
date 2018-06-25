@@ -22,7 +22,7 @@ public class DateConverter implements Converter {
 
 	private static final Logger logger = LoggerFactory.getLogger(DateConverter.class);
 
-	private static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:HttpUtils";
+	private static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
 	private static final String DATETIME_PATTERN_NO_SECOND = "yyyy-MM-dd HH:mm";
 

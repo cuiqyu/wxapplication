@@ -112,7 +112,7 @@
 				日期格式：<fmt:formatDate value="${test.createDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/>
 				<input id="createDate" name="createDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
 					value="<fmt:formatDate value="${test.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:HttpUtils',isShowClear:false});"/>
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 				<br/>
 				当前用户：${fns:getUser().name}<br/>
 				当前用户缓存：${fns:getCache('menuList','')[0]}<br/>

@@ -80,7 +80,7 @@ public class TestDataMain extends DataEntity<TestDataMain> {
 		this.sex = sex;
 	}
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getInDate() {
 		return inDate;
 	}
