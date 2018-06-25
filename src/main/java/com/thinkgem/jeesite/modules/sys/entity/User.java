@@ -217,7 +217,7 @@ public class User extends DataEntity<User> {
 		this.loginIp = loginIp;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
 	@ExcelField(title="最后登录日期", type=1, align=1, sort=110)
 	public Date getLoginDate() {
 		return loginDate;
@@ -254,7 +254,7 @@ public class User extends DataEntity<User> {
 		this.oldLoginIp = oldLoginIp;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
 	public Date getOldLoginDate() {
 		if (oldLoginDate == null){
 			return loginDate;

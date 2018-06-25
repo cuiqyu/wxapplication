@@ -22,7 +22,7 @@ public class OrderRest {
      * 创建订单
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public boolean addOrder(@RequestBody PostOrder postOrder) {
+    public String addOrder(@RequestBody PostOrder postOrder) {
         return orderService.addOrder(postOrder);
     }
 

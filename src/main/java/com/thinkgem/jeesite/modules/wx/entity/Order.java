@@ -1,5 +1,6 @@
 package com.thinkgem.jeesite.modules.wx.entity;
 
+import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.modules.wx.constant.OrderState;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.util.Date;
 /**
  * 订单
  */
-public class Order implements Serializable {
+public class Order extends DataEntity<Order> implements Serializable {
     private String id;
     private Double amount;
     private OrderState state;

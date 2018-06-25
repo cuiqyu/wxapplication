@@ -88,7 +88,7 @@ public class Leave extends DataEntity<Leave> {
 		this.processInstanceId = processInstanceId;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -97,7 +97,7 @@ public class Leave extends DataEntity<Leave> {
 		this.startTime = startTime;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -106,7 +106,7 @@ public class Leave extends DataEntity<Leave> {
 		this.endTime = endTime;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
 	public Date getRealityStartTime() {
 		return realityStartTime;
 	}
@@ -115,7 +115,7 @@ public class Leave extends DataEntity<Leave> {
 		this.realityStartTime = realityStartTime;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
 	public Date getRealityEndTime() {
 		return realityEndTime;
 	}

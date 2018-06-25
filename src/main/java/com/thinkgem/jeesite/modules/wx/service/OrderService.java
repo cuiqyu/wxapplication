@@ -3,12 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.wx.service;
 
-import com.thinkgem.jeesite.modules.wx.entity.Store;
+import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.wx.constant.OrderState;
+import com.thinkgem.jeesite.modules.wx.entity.*;
+import com.thinkgem.jeesite.modules.wx.utils.HttpUtils;
 import com.thinkgem.jeesite.modules.wx.utils.SerializationDefine;
 import com.thinkgem.jeesite.modules.wx.dao.OrderDao;
-import com.thinkgem.jeesite.modules.wx.entity.Food;
-import com.thinkgem.jeesite.modules.wx.entity.Order;
-import com.thinkgem.jeesite.modules.wx.entity.Order2Food;
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
 import com.thinkgem.jeesite.modules.wx.entity.vo.PostOrder;
 import com.thinkgem.jeesite.modules.wx.utils.UUIDUtils;
@@ -26,7 +26,7 @@ import java.util.*;
  * @version 2018-06-04
  */
 @Service
-public class OrderService {
+public class OrderService extends CrudService<OrderDao, Order> {
 
     @Autowired
     private OrderDao orderDao;
@@ -39,15 +39,16 @@ public class OrderService {
 
     /**
      * 创建订单
+     *
      * @param postOrder
      * @return
      */
     @Transactional
-    public boolean addOrder(PostOrder postOrder) {
+    public String addOrder(PostOrder postOrder) {
         //查找本店库里所有菜品id
         List<Food> foodList = foodService.listAllFood(postOrder.getStoreId());
         //用户点菜菜品id和数量map
-        Map<String,Integer> foodMap = postOrder.getFoodMap();
+        Map<String, Integer> foodMap = postOrder.getFoodMap();
         //用户点菜菜品id列表
         Set<String> foodIds = foodMap.keySet();
         //存放用户点菜对应的菜品信息
@@ -66,7 +67,7 @@ public class OrderService {
                     tag--;
                     //累计金额
                     int count = foodMap.get(food.getId());
-                    amount += (food.getPrice().doubleValue())  * count;
+                    amount += (food.getPrice().doubleValue()) * count;
                     break;
                 }
             }
@@ -75,7 +76,6 @@ public class OrderService {
         if (tag != 0) {
             throw new IllegalArgumentException("存在不存在的菜品,下单失败");
         }
-
 
 
         //1.创建订单
@@ -92,6 +92,7 @@ public class OrderService {
         order.setCustomerName(postOrder.getCustomerName());
         order.setCustomerWxId(postOrder.getCustomerWxId());
         order.setStoreId(postOrder.getStoreId());
+        order.setState(OrderState.UNPAID);
 
         //2.创建订单详情
         List<Order2Food> order2Foods = new ArrayList<>();
@@ -105,21 +106,47 @@ public class OrderService {
             order2Food.setFoodPrice(food.getPrice().doubleValue());
             order2Foods.add(order2Food);
         }
-        String foodDetail  = SerializationDefine.List2Str(order2Foods);
+        String foodDetail = SerializationDefine.List2Str(order2Foods);
         order.setFoodDetail(foodDetail);
         orderDao.addOrder(order);
 
 
+        //----------------------------调用微信登录凭证校验---------------------------
+        //https://developers.weixin.qq.com/miniprogram/dev/api/api-login.html#wxloginobject
+        String code = "";
+        PostWxAuth postWxAuth = new PostWxAuth(code);
+        String aa = HttpUtils.post("https://developers.weixin.qq.com/miniprogram/dev/api/api-login.html#wxloginobject", postWxAuth);
+        System.out.println(aa);
+        return aa;
+
+
+//        String openId = "";
+//        int totalFee = (int) (amount * 10 * 10);
+//        //签名
+//        String stringA = "appid=" + appid + "&" + "mch_id=" + mch_id + "&" + "nonce_str=" + nonce_str + "&"
+//            + "body=" + body + "&" + "out_trade_no=" + id + "&" + "total_fee=" + totalFee + "&"
+//            + "spbill_create_ip=" + spbill_create_ip + "&" + "notify_url=" + notify_url + "&" + "trade_type="
+//            + trade_type + "&" + "openid=" + openid;
+//
+//        String SignTemp = stringA + "&key=" + key;
+//        String sign = DigestUtils.md5Hex(SignTemp).toUpperCase();
+//        //-----------------------------调用微信统一下单api----------------------------
+//        //https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_1&index=1
+//        PostWxOrder postWxOrder = new PostWxOrder(sign, id , totalFee , openId);
+//        String x = HttpUtils.post("https://api.mch.weixin.qq.com/pay/unifiedorder", postWxOrder);
+//        System.out.println(x);
+
+
         //3. 增加菜品的销量
 
-
-
-        return true;
+//
+//        return true;
 
     }
 
     /**
      * 根据点餐的用户wx_id获取订单记录
+     *
      * @return
      */
     public List<OrderDetail> findOrderByWx_id(String storeId, String wxId) {
@@ -132,7 +159,6 @@ public class OrderService {
         }
         return orderDao.findOrderByWx_id(storeId, wxId);
     }
-
 
 
 }

@@ -50,8 +50,8 @@ public class ActUtils {
 //			for (Field field : ActUtils.class.getFields()){
 //				if(StringUtils.startsWith(field.getName(), "PD_")){
 //					try{
-//						String[] ss = (String[])field.get(null);
-//						put(ss[0], ss[1]);
+//						String[] HttpUtils = (String[])field.get(null);
+//						put(HttpUtils[0], HttpUtils[1]);
 //					}catch (Exception e) {
 //						logger.debug("load pd error: {}", field.getName());
 //					}

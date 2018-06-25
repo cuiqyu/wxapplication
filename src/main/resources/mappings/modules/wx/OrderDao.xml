@@ -3,7 +3,29 @@
 <mapper namespace="com.thinkgem.jeesite.modules.wx.dao.OrderDao">
 
     <insert id="addOrder">
-
+        INSERT INTO wx_ordel(
+            id,
+            amount,
+            state,
+            customer_name,
+            customer_wx_id,
+            store_id,
+            create_at,
+            create_day,
+            create_month,
+            food_detail
+        ) VALUES (
+            #{id},
+            #{amount},
+            #{state},
+            #{customerName},
+            #{customerWxId},
+            #{storeId},
+            #{createAt},
+            #{createDay},
+            #{createMonth},
+            #{foodDetail}
+        )
     </insert>
 
     <select id="findOrderByWx_id" resultType="com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail">

@@ -102,7 +102,7 @@ public class Act extends BaseEntity<Act> {
 		this.taskDefKey = taskDefKey;
 	}
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
 	public Date getTaskCreateDate() {
 		if (task != null){
 			return task.getCreateTime();
@@ -110,7 +110,7 @@ public class Act extends BaseEntity<Act> {
 		return null;
 	}
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
 	public Date getTaskEndDate() {
 		if (histTask != null){
 			return histTask.getEndTime();
@@ -196,7 +196,7 @@ public class Act extends BaseEntity<Act> {
 		this.histIns = histIns;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
 	public Date getBeginDate() {
 		return beginDate;
 	}
@@ -205,7 +205,7 @@ public class Act extends BaseEntity<Act> {
 		this.beginDate = beginDate;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:HttpUtils")
 	public Date getEndDate() {
 		return endDate;
 	}

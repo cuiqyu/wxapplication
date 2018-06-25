@@ -126,7 +126,7 @@ public class TimeUtils {
      * @param date
      */
     public TimeUtils(Date date){
-    	this(DateFormatUtils.formatUTC(date, "HH:mm:ss"));
+    	this(DateFormatUtils.formatUTC(date, "HH:mm:HttpUtils"));
     }
 
     /**
@@ -281,7 +281,7 @@ public class TimeUtils {
 
     private void parseTimeException(String time) {
         throw new IllegalArgumentException(time + ", time format error, HH"
-                + this.timeSeparator + "mm" + this.timeSeparator + "ss");
+                + this.timeSeparator + "mm" + this.timeSeparator + "HttpUtils");
     }
 
     public String toString() {

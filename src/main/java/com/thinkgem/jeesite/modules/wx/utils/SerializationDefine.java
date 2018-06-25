@@ -11,7 +11,7 @@ import java.util.List;
  * Created by mi on 16-12-22.
  */
 public class SerializationDefine {
-    public static String segSymbols = "##segSymbols##";//分割符号
+    public static String segSymbols = ",";//分割符号
 
     public static String Object2String(Object obj) {
         Preconditions.checkArgument(obj != null, "序列化对象为null");

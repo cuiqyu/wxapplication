@@ -1,5 +1,6 @@
 package com.thinkgem.jeesite.modules.wx.dao;
 
+import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wx.entity.Order;
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
@@ -14,7 +15,7 @@ import java.util.List;
  * @version 2018-06-04
  */
 @MyBatisDao
-public interface OrderDao{
+public interface OrderDao extends CrudDao<Order> {
 
     boolean addOrder(Order order);
 
