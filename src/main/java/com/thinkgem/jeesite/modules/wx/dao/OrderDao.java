@@ -18,6 +18,6 @@ public interface OrderDao{
 
     boolean addOrder(Order order);
 
-    List<OrderDetail> findOrderByWx_id(@Param("storeId") String storeId, @Param("wxId") String wxId);
+    List<OrderDetail> findOrderByWx_id(@Param("storeId") String storeId, @Param("wxId") String wxId, @Param("pageSize") Integer pageSize, @Param("pageNo") Integer pageNo);
 
 }

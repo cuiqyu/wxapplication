@@ -12,6 +12,9 @@
         select *
         from wx_food_comment
         where food_id = #{foodId}
+        <if test="null != pageNo and null != pageSize">
+            limit (pageSize - 1) * pageNo, pageNo
+        </if>
         order by create_at desc;
     </select>
 </mapper>

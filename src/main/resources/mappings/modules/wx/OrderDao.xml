@@ -11,6 +11,9 @@
         from wx_ordel
         where customer_wx_id = #{wxId}
         and store_id = #{storeId}
+        <if test="null != pageNo and null != pageSize">
+            limit (pageSize - 1) * pageNo, pageNo
+        </if>
         order by create_at desc;
     </select>
 </mapper>

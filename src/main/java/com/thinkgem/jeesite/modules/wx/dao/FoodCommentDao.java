@@ -20,5 +20,6 @@ public interface FoodCommentDao {
 
     boolean foodComment(PostFoodCommentVo postFoodCommentVo);
 
-    List<FoodComment> listFoodCommentByFoodId(String foodId);
+    List<FoodComment> listFoodCommentByFoodId(@Param("foodId") String foodId, @Param("pageSize") Integer pageSize, @Param("pageNo") Integer pageNo);
+
 }
