@@ -6,9 +6,12 @@ package com.thinkgem.jeesite.modules.wx.service;
 import com.thinkgem.jeesite.modules.wx.dao.FoodCommentDao;
 import com.thinkgem.jeesite.modules.wx.entity.FoodComment;
 import com.thinkgem.jeesite.modules.wx.entity.vo.PostFoodCommentVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,6 +22,8 @@ import java.util.List;
  */
 @Service
 public class FoodCommentService {
+
+    private final static Logger logger = LoggerFactory.getLogger(FoodCommentService.class);
 
     @Autowired
     private FoodCommentDao foodCommentDao;
@@ -38,8 +43,12 @@ public class FoodCommentService {
     /**
      * 根据菜品id获取评论
      */
-    public List<FoodComment>  listFoodCommentByFoodId(String foodId) {
-       return foodCommentDao.listFoodCommentByFoodId(foodId);
+    public List<FoodComment>  listFoodCommentByFoodId(String foodId, Integer pageSize, Integer pageNo) {
+        if ((null != pageSize && pageSize < 0) || (null != pageNo && pageNo < 0)) {
+            logger.info("分页查询菜品评价信息失败，pageSize和pageNo都不能小于0！");
+            return new LinkedList<>();
+        }
+       return foodCommentDao.listFoodCommentByFoodId(foodId, pageSize, pageNo);
     }
 
 

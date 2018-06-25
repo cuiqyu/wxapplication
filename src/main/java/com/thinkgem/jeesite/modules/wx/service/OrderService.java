@@ -12,7 +12,10 @@ import com.thinkgem.jeesite.modules.wx.dao.OrderDao;
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
 import com.thinkgem.jeesite.modules.wx.entity.vo.PostOrder;
 import com.thinkgem.jeesite.modules.wx.utils.UUIDUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,8 @@ import java.util.*;
  */
 @Service
 public class OrderService extends CrudService<OrderDao, Order> {
+
+    private final static Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     @Autowired
     private OrderDao orderDao;
@@ -149,16 +154,21 @@ public class OrderService extends CrudService<OrderDao, Order> {
      *
      * @return
      */
-    public List<OrderDetail> findOrderByWx_id(String storeId, String wxId) {
-        if (com.thinkgem.jeesite.common.utils.StringUtils.isEmpty(storeId)) {
+    public List<OrderDetail> findOrderByWx_id(String storeId, String wxId, Integer pageSize, Integer pageNo) {
+        if (StringUtils.isEmpty(storeId)) {
             throw new IllegalArgumentException("店铺id不可为空");
+        }
+        if ((null != pageSize && pageSize < 0) || (null != pageNo && pageNo < 0)) {
+            logger.info("分页查询用户订单信息失败，pageSize和pageNo都不能小于0！");
+            return new LinkedList<>();
         }
         Store store = storeService.findStoreById(storeId);
         if (store == null) {
             throw new IllegalArgumentException("店铺不存在");
         }
-        return orderDao.findOrderByWx_id(storeId, wxId);
+        return orderDao.findOrderByWx_id(storeId, wxId, pageSize, pageNo);
     }
+
 
 
 }

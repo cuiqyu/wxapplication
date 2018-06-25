@@ -30,9 +30,16 @@ public class FoodCommentRest {
 
     /**
      * 根据菜品id获取评价列表
+     * @param foodId 菜品id
+     * @param pageSize 分页大小
+     * @param pageNo 第几页
+     * @return
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public List<FoodComment> listFoodCommentByFoodId(@RequestParam("foodId") String foodId) {
-        return foodCommentService.listFoodCommentByFoodId(foodId);
+    public List<FoodComment> listFoodCommentByFoodId(@RequestParam("foodId") String foodId,
+                                                     @RequestParam("pageSize") Integer pageSize,
+                                                     @RequestParam("pageNo") Integer pageNo) {
+        return foodCommentService.listFoodCommentByFoodId(foodId, pageSize, pageNo);
     }
+
 }
