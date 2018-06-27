@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.wx.dao.OrderDao">
 
-    <insert id="addOrder">
+    <insert id="addOrder" >
         INSERT INTO wx_ordel(
             id,
             amount,

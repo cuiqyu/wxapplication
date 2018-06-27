@@ -122,7 +122,7 @@ public class OrderService extends CrudService<OrderDao, Order> {
         PostWxAuth postWxAuth = new PostWxAuth(code);
         String aa = HttpUtils.post("https://developers.weixin.qq.com/miniprogram/dev/api/api-login.html#wxloginobject", postWxAuth);
         System.out.println(aa);
-        return aa;
+        return "true";
 
 
 //        String openId = "";

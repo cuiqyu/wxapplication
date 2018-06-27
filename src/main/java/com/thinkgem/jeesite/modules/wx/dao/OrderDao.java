@@ -17,7 +17,7 @@ import java.util.List;
 @MyBatisDao
 public interface OrderDao extends CrudDao<Order> {
 
-    boolean addOrder(Order order);
+    int addOrder(Order order);
 
     List<OrderDetail> findOrderByWx_id(@Param("storeId") String storeId, @Param("wxId") String wxId, @Param("pageSize") Integer pageSize, @Param("pageNo") Integer pageNo);
 
