@@ -1,9 +1,11 @@
 package com.thinkgem.jeesite.modules.wx.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -48,13 +50,44 @@ public class HttpUtils {
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
         post.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
-        String s = beanToXml(t);
-        System.out.println(s);
-        StringEntity payload = new StringEntity(s, "UTF-8");
+        String json = JSON.toJSONString(t);
+        StringEntity payload = new StringEntity(json, "UTF-8");
         post.setEntity(payload);
         String text;
         try {
             text = client.execute(post, response -> {
+                StringBuilder builder = new StringBuilder();
+                HttpEntity entity = response.getEntity();
+                String text1;
+                if (entity != null) {
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent()));
+                    while ((text1 = bufferedReader.readLine()) != null) {
+                        builder.append(text1);
+                    }
+
+                }
+                return builder.toString();
+            });
+        } catch (Exception e) {
+            throw new IllegalArgumentException("发送失败!");
+        } finally {
+            try {
+                client.close();
+            } catch (IOException e) {
+                throw new IllegalArgumentException("HTTP CLIENT 关闭失败");
+            }
+        }
+        return text;
+    }
+
+    public static String excute(String url) {
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpGet get = new HttpGet(url);
+        get.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        String text;
+        try {
+            text = client.execute(get, response -> {
                 StringBuilder builder = new StringBuilder();
                 HttpEntity entity = response.getEntity();
                 String text1;
