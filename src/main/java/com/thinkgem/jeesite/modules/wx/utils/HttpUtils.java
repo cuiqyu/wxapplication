@@ -49,9 +49,9 @@ public class HttpUtils {
 
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
-        post.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
-        String json = JSON.toJSONString(t);
-        StringEntity payload = new StringEntity(json, "UTF-8");
+        String xml = beanToXml(t);
+        System.out.println(xml);
+        StringEntity payload = new StringEntity(xml, "UTF-8");
         post.setEntity(payload);
         String text;
         try {
@@ -60,39 +60,8 @@ public class HttpUtils {
                 HttpEntity entity = response.getEntity();
                 String text1;
                 if (entity != null) {
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent()));
-                    while ((text1 = bufferedReader.readLine()) != null) {
-                        builder.append(text1);
-                    }
-
-                }
-                return builder.toString();
-            });
-        } catch (Exception e) {
-            throw new IllegalArgumentException("发送失败!");
-        } finally {
-            try {
-                client.close();
-            } catch (IOException e) {
-                throw new IllegalArgumentException("HTTP CLIENT 关闭失败");
-            }
-        }
-        return text;
-    }
-
-    public static String excute(String url) {
-
-        CloseableHttpClient client = HttpClients.createDefault();
-        HttpGet get = new HttpGet(url);
-        get.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
-        String text;
-        try {
-            text = client.execute(get, response -> {
-                StringBuilder builder = new StringBuilder();
-                HttpEntity entity = response.getEntity();
-                String text1;
-                if (entity != null) {
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent()));
+                    BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(entity.getContent(),"UTF-8"));
                     while ((text1 = bufferedReader.readLine()) != null) {
                         builder.append(text1);
                     }

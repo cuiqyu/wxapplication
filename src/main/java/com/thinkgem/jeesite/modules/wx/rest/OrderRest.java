@@ -1,6 +1,7 @@
 package com.thinkgem.jeesite.modules.wx.rest;
 
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
+import com.thinkgem.jeesite.modules.wx.entity.vo.OrderVo;
 import com.thinkgem.jeesite.modules.wx.entity.vo.PostOrder;
 import com.thinkgem.jeesite.modules.wx.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class OrderRest {
      * 创建订单
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public String addOrder(@RequestBody PostOrder postOrder) {
+    public OrderVo addOrder(@RequestBody PostOrder postOrder) {
         return orderService.addOrder(postOrder);
     }
 

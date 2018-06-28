@@ -7,10 +7,7 @@ import com.google.common.base.Strings;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by mi on 16-12-22.
- */
-public class SerializationDefine {
+public class JsonUtils {
     public static String segSymbols = ",";//分割符号
 
     public static String Object2String(Object obj) {
