@@ -21,4 +21,7 @@ public interface OrderDao extends CrudDao<Order> {
 
     List<OrderDetail> findOrderByWx_id(@Param("storeId") String storeId, @Param("wxId") String wxId, @Param("pageSize") Integer pageSize, @Param("pageNo") Integer pageNo);
 
+    OrderDetail findById(@Param("orderId") String orderId);
+
+    int updateState(@Param("id") String id);
 }

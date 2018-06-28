@@ -27,6 +27,11 @@
             #{foodDetail}
         )
     </insert>
+    <update id="updateState">
+        update wx_ordel
+        set wx_ordel = 'PAID'
+        where id = #{id}
+    </update>
 
     <select id="findOrderByWx_id" resultType="com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail">
         select *
@@ -37,5 +42,11 @@
             limit (pageSize - 1) * pageNo, pageNo
         </if>
         order by create_at desc;
+    </select>
+
+    <select id="findById" resultType="com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail">
+        select *
+        from wx_ordel
+        where id = #{orderId}
     </select>
 </mapper>

@@ -188,4 +188,33 @@ public class OrderService extends CrudService<OrderDao, Order> {
     }
 
 
+    /**
+     * 更新订单状态为已支付
+     *
+     * @return
+     */
+    public OrderDetail findById(String orderId) {
+        return orderDao.findById(orderId);
+    }
+
+
+    /**
+     * 更新订单状态为已支付
+     *
+     * @return
+     */
+    public void updateOrderState(String orderId) {
+        if (StringUtils.isEmpty(orderId)) {
+            throw new IllegalArgumentException("orderId不可为空");
+        }
+        OrderDetail orderDetail = findById(orderId);
+        if (orderDetail == null) {
+            throw new IllegalArgumentException("订单不存在");
+        }
+        if (OrderState.UNPAID.name().equals(orderDetail.getOrderState())) {
+            orderDao.updateState(orderDetail.getId());
+        }
+    }
+
+
 }

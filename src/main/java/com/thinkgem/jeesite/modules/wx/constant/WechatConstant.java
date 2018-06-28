@@ -23,7 +23,7 @@ public class WechatConstant {
     public static final String spbill_create_ip = "118.24.91.136";
 
     //异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
-    public static final String notify_url = "118.24.91.136:8080/jeesite/api/HttpUtils";
+    public static final String notify_url = "118.24.91.136:8080/jeesite/api/wx/result";
 
     //小程序取值如下：JSAPI，详细说明见参数规定
     public static final String trade_type = "JSAPI";

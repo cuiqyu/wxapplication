@@ -1,5 +1,7 @@
 package com.thinkgem.jeesite.modules.wx.entity.vo;
 
+import com.thinkgem.jeesite.modules.wx.constant.OrderState;
+
 import java.util.Date;
 
 /**
@@ -12,6 +14,7 @@ public class OrderDetail {
     private String storeId;
     private Date createAt;
     private String order2FoodList;
+    private OrderState orderState;
 
     public String getId() {
         return id;
@@ -51,5 +54,13 @@ public class OrderDetail {
 
     public void setOrder2FoodList(String order2FoodList) {
         this.order2FoodList = order2FoodList;
+    }
+
+    public OrderState getOrderState() {
+        return orderState;
+    }
+
+    public void setOrderState(OrderState orderState) {
+        this.orderState = orderState;
     }
 }
