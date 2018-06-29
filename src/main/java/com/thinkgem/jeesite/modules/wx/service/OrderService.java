@@ -160,15 +160,17 @@ public class OrderService extends CrudService<OrderDao, Order> {
         }
         //再次签名，便于小程序去调用支付接口
         String timeStamp = new Date().getTime() + "";
+        String nonceStr = WechatConstant.nonce_str;
         String stringB =
             "appId=" + appid +
-                "&" + "nonceStr=" + vo.getNonce_str() +
+                "&" + "nonceStr=" + nonceStr +
                 "&" + "package=" + "prepay_id=" + vo.getPrepay_id() +
                 "&" + "signType=MD5" +
                 "&" + "timeStamp=" + timeStamp;
         String SignTempB = stringB + "&key=" + key;
         String signB = MD5Util.md5(SignTempB).toUpperCase();
         vo.setSign(signB);
+        vo.setNonce_str(nonceStr);
         vo.setTimeStamp(timeStamp);
         return vo;
 
