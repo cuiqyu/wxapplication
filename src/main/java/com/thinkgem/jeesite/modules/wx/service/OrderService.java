@@ -132,7 +132,7 @@ public class OrderService extends CrudService<OrderDao, Order> {
 //        System.out.println(aa);
 //        return aa;
 
-
+        String nonceStr = WechatConstant.nonce_str;
         String openId = postOrder.getCustomerWxId();
         int totalFee = (int) (amount * 10 * 10);
         //签名
@@ -140,7 +140,7 @@ public class OrderService extends CrudService<OrderDao, Order> {
             "appid=" + appid +
                 "&" + "body=" + body +
                 "&" + "mch_id=" + mch_id +
-                "&" + "nonce_str=" + nonce_str +
+                "&" + "nonce_str=" + nonceStr +
                 "&" + "notify_url=" + notify_url +
                 "&" + "openid=" + openId +
                 "&" + "out_trade_no=" + id +
@@ -159,14 +159,12 @@ public class OrderService extends CrudService<OrderDao, Order> {
             orderDao.addOrder(order);
         }
         //再次签名，便于小程序去调用支付接口
-        String timeStamp = new Date().getTime() + "";
-        String nonceStr = WechatConstant.nonce_str;
+        String timeStamp = (System.currentTimeMillis() / 1000) + "";
+        //拼接签名需要的参数
         String stringB =
-            "appId=" + appid +
-                "&" + "nonceStr=" + nonceStr +
-                "&" + "package=" + "prepay_id=" + vo.getPrepay_id() +
-                "&" + "signType=MD5" +
-                "&" + "timeStamp=" + timeStamp;
+            "appId=" + appid + "&nonceStr=" +
+                nonceStr + "&package=prepay_id=" + vo.getPrepay_id()
+                + "&signType=MD5&timeStamp=" + timeStamp;
         String SignTempB = stringB + "&key=" + key;
         String signB = MD5Util.md5(SignTempB).toUpperCase();
         vo.setSign(signB);
