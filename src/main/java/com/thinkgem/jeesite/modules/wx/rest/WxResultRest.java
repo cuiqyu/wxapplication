@@ -36,7 +36,7 @@ public class WxResultRest {
      * wx支付成功回调
      */
     @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.POST})
-    public WxResultResponceVo wxResult(HttpServletRequest request) throws IllegalAccessException {
+    public WxResultResponceVo wxResult(HttpServletRequest request) {
         try {
             String xml = IOUtils.toString(request.getInputStream());
             WxResultVo wxResultVo = HttpUtils.xmlToBean(WxResultVo.class, xml);
@@ -47,7 +47,10 @@ public class WxResultRest {
             logger.info("recive wx callback");
             return wxResultResponceVo;
         } catch (IOException e) {
-            throw new IllegalAccessException("回调不成功");
+            WxResultResponceVo wxResultResponceVo = new WxResultResponceVo();
+            wxResultResponceVo.setReturn_code("FAIL");
+            wxResultResponceVo.setReturn_msg("参数格式校验错误");
+            return wxResultResponceVo;
         }
     }
 
