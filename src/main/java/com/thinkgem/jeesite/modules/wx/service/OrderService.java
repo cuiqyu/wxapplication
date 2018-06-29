@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.wx.service;
 
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.wx.constant.OrderState;
+import com.thinkgem.jeesite.modules.wx.constant.WechatConstant;
 import com.thinkgem.jeesite.modules.wx.entity.*;
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderVo;
 import com.thinkgem.jeesite.modules.wx.utils.HttpUtils;
@@ -148,7 +149,6 @@ public class OrderService extends CrudService<OrderDao, Order> {
                 "&" + "trade_type=" + trade_type;
 
         String SignTemp = stringA + "&key=" + key;
-        System.out.println(SignTemp);
         String sign = MD5Util.md5(SignTemp).toUpperCase();
         //-----------------------------调用微信统一下单api----------------------------
         //https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_1&index=1
@@ -158,6 +158,16 @@ public class OrderService extends CrudService<OrderDao, Order> {
         if ("SUCCESS".equals(vo.getReturn_code()) && "SUCCESS".equals(vo.getResult_code())) {
             orderDao.addOrder(order);
         }
+        //再次签名，便于小程序去调用支付接口
+        String stringB =
+            "appid=" + appid +
+                "&" + "nonceStr=" + WechatConstant.nonce_str +
+                "&" + "package=" + "prepay_id=" + vo.getPrepay_id() +
+                "&" + "signType=MD5" +
+                "&" + "timeStamp=" + new Date().getTime();
+        String SignTempB = stringB + "&key=" + key;
+        String signB = MD5Util.md5(SignTempB).toUpperCase();
+        vo.setSign(signB);
         return vo;
 
         //3. 增加菜品的销量
