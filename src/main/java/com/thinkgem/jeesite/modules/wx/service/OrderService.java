@@ -161,7 +161,7 @@ public class OrderService extends CrudService<OrderDao, Order> {
         //再次签名，便于小程序去调用支付接口
         String timeStamp = new Date().getTime() + "";
         String stringB =
-            "appid=" + appid +
+            "appId=" + appid +
                 "&" + "nonceStr=" + vo.getNonce_str() +
                 "&" + "package=" + "prepay_id=" + vo.getPrepay_id() +
                 "&" + "signType=MD5" +
