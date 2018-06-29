@@ -159,15 +159,17 @@ public class OrderService extends CrudService<OrderDao, Order> {
             orderDao.addOrder(order);
         }
         //再次签名，便于小程序去调用支付接口
+        String timeStamp = new Date().getTime() + "";
         String stringB =
             "appid=" + appid +
-                "&" + "nonceStr=" + WechatConstant.nonce_str +
+                "&" + "nonceStr=" + vo.getNonce_str() +
                 "&" + "package=" + "prepay_id=" + vo.getPrepay_id() +
                 "&" + "signType=MD5" +
-                "&" + "timeStamp=" + new Date().getTime();
+                "&" + "timeStamp=" + timeStamp;
         String SignTempB = stringB + "&key=" + key;
         String signB = MD5Util.md5(SignTempB).toUpperCase();
         vo.setSign(signB);
+        vo.setTimeStamp(timeStamp);
         return vo;
 
         //3. 增加菜品的销量

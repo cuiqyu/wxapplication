@@ -14,6 +14,7 @@ public class OrderVo {
     private String err_code_des;
     private String trade_type;
     private String prepay_id;
+    private String timeStamp;
 
     public String getReturn_code() {
         return return_code;
@@ -109,5 +110,13 @@ public class OrderVo {
 
     public void setPrepay_id(String prepay_id) {
         this.prepay_id = prepay_id;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }
