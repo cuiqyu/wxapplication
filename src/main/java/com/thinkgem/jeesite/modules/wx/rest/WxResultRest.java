@@ -44,7 +44,7 @@ public class WxResultRest {
             WxResultResponceVo wxResultResponceVo = new WxResultResponceVo();
             wxResultResponceVo.setReturn_code("SUCCESS");
             wxResultResponceVo.setReturn_msg("OK");
-            logger.info("成功收到微信回掉更新订单状态");
+            logger.info("recive wx callback");
             return wxResultResponceVo;
         } catch (IOException e) {
             throw new IllegalAccessException("回调不成功");

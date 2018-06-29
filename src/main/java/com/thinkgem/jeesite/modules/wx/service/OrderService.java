@@ -224,6 +224,7 @@ public class OrderService extends CrudService<OrderDao, Order> {
             throw new IllegalArgumentException("订单不存在");
         }
         if (OrderState.UNPAID.name().equals(orderDetail.getOrderState())) {
+            logger.info("update order to paid");
             orderDao.updateState(orderDetail.getId());
         }
     }
