@@ -97,7 +97,7 @@ public class OrderService extends CrudService<OrderDao, Order> {
         DateTime currentDate = new DateTime();
         Date date1 = currentDate.withTimeAtStartOfDay().toDate();
         order.setCreateDay(date1);
-        Date date2 = currentDate.dayOfMonth().withMinimumValue().toDate();
+        Date date2 = currentDate.dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
         order.setCreateMonth(date2);
         order.setCustomerName(postOrder.getCustomerName());
         order.setCustomerWxId(postOrder.getCustomerWxId());
