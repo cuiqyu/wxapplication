@@ -36,7 +36,7 @@ public class WxResultRest {
      * wx支付成功回调
      */
     @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.POST})
-    public WxResultResponceVo wxResult(HttpServletRequest request) {
+    public String wxResult(HttpServletRequest request) {
         try {
             String xml = IOUtils.toString(request.getInputStream());
             WxResultVo wxResultVo = HttpUtils.xmlToBean(WxResultVo.class, xml);
@@ -45,12 +45,12 @@ public class WxResultRest {
             wxResultResponceVo.setReturn_code("SUCCESS");
             wxResultResponceVo.setReturn_msg("OK");
             logger.info("recive wx callback");
-            return wxResultResponceVo;
+            return HttpUtils.beanToXml(wxResultResponceVo);
         } catch (IOException e) {
             WxResultResponceVo wxResultResponceVo = new WxResultResponceVo();
             wxResultResponceVo.setReturn_code("FAIL");
             wxResultResponceVo.setReturn_msg("参数格式校验错误");
-            return wxResultResponceVo;
+            return HttpUtils.beanToXml(wxResultResponceVo);
         }
     }
 

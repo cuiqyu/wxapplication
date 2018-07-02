@@ -12,6 +12,7 @@ public class OrderDetail {
     private String id;
     private Double amount;
     private String storeId;
+    private Date state;
     private Date createAt;
     private String order2FoodList;
     private OrderState orderState;
@@ -62,5 +63,13 @@ public class OrderDetail {
 
     public void setOrderState(OrderState orderState) {
         this.orderState = orderState;
+    }
+
+    public Date getState() {
+        return state;
+    }
+
+    public void setState(Date state) {
+        this.state = state;
     }
 }
