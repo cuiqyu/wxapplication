@@ -12,7 +12,7 @@ public class OrderDetail {
     private String id;
     private Double amount;
     private String storeId;
-    private Date state;
+    private String state;
     private Date createAt;
     private String order2FoodList;
     private OrderState orderState;
@@ -65,11 +65,11 @@ public class OrderDetail {
         this.orderState = orderState;
     }
 
-    public Date getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(Date state) {
+    public void setState(String state) {
         this.state = state;
     }
 }
