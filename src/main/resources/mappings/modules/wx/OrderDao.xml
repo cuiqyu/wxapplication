@@ -29,7 +29,7 @@
     </insert>
     <update id="updateState">
         update wx_ordel
-        set wx_ordel = 'PAID'
+        set state = 'PAID'
         where id = #{id}
     </update>
 
