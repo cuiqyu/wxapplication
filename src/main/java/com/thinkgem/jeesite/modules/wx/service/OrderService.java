@@ -215,6 +215,7 @@ public class OrderService extends CrudService<OrderDao, Order> {
      *
      * @return
      */
+    @Transactional
     public int updateOrderState(String orderId) {
         if (StringUtils.isEmpty(orderId)) {
             throw new IllegalArgumentException("orderId不可为空");
