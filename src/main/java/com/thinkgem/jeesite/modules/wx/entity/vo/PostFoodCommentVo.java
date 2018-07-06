@@ -6,12 +6,21 @@ package com.thinkgem.jeesite.modules.wx.entity.vo;
  */
 public class PostFoodCommentVo {
 
+    private String id;
     private String foodId;
     private String storeId;
     private String star;
     private String content;
     private String customerName;
     private String customerWxId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getFoodId() {
         return foodId;

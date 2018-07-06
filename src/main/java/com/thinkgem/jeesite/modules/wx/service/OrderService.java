@@ -196,7 +196,9 @@ public class OrderService extends CrudService<OrderDao, Order> {
         if (store == null) {
             throw new IllegalArgumentException("店铺不存在");
         }
-        return orderDao.findOrderByWx_id(storeId, wxId, pageSize, pageNo);
+        int limit = pageSize;
+        int offset = pageNo == 1 ? 0 : pageSize * (pageNo - 1);
+        return orderDao.findOrderByWx_id(storeId, wxId, limit, offset);
     }
 
 
