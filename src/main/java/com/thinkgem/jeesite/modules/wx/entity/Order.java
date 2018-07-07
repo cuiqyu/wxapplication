@@ -29,6 +29,7 @@ public class Order extends DataEntity<Order> {
     private String storeName; // 店铺名称
     private String orderTimeType; // 订单时间查询方式
     private List<Order2Food> foodDetailInfoList; // 订单详情信息
+    private Date createYear;
 
     public String getId() {
         return id;
@@ -140,6 +141,14 @@ public class Order extends DataEntity<Order> {
 
     public void setFoodDetailInfoList(List<Order2Food> foodDetailInfoList) {
         this.foodDetailInfoList = foodDetailInfoList;
+    }
+
+    public Date getCreateYear() {
+        return createYear;
+    }
+
+    public void setCreateYear(Date createYear) {
+        this.createYear = createYear;
     }
 
 }

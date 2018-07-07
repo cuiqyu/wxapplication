@@ -42,6 +42,8 @@
                     $(".show_" + $(this).attr("data-column")).hide();
                 }
             });
+
+            $(".foodDetailsDiv").hide();
         });
         function page(n,s){
             $("#pageNo").val(n);
@@ -70,10 +72,17 @@
                 $("#dayInput").show();
             }
         }
+
+        function showFoodDetail(detailId) {
+            var html = $("#" + detailId).html();
+            $("#foodDetailsModal_body_div").html(html);
+            $("#foodDetailsModal").modal();
+        }
     </script>
 </head>
 <body>
 <ul class="nav nav-tabs">
+    <li><a href="${ctx}/wx/order/achievementList">订单业绩统计</a></li>
     <li class="active"><a href="${ctx}/wx/order/list">订单列表信息</a></li>
 </ul>
 <form:form id="searchForm" modelAttribute="order" action="${ctx}/wx/order/list" method="post" class="breadcrumb form-search">
@@ -115,7 +124,7 @@
                    value="<fmt:formatDate value="${order.createMonth}" pattern="yyyy-MM"/>"
                    onclick="WdatePicker({dateFmt:'yyyy-MM',isShowClear:true});"/>
             <input id="dayInput" name="createDay" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-                   value="<fmt:formatDate value="${order.createMonth}" pattern="yyyy-MM-dd"/>"
+                   value="<fmt:formatDate value="${order.createDay}" pattern="yyyy-MM-dd"/>"
                    onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
         </li>
         <li class="btns">
@@ -178,27 +187,44 @@
             <td class="show_8"><fmt:formatDate value="${orderva.createAt}" pattern="dd"/></td>
             <td class="show_9"><fmt:formatDate value="${orderva.createAt}" pattern="HH:mm:ss"/></td>
             <td class="show_10">
-                <table>
-                    <tr>
-                        <td>菜品名称</td>
-                        <td>所属分类</td>
-                        <td>单价</td>
-                        <td>数量</td>
-                    </tr>
-                    <c:forEach items="${orderva.foodDetailInfoList}" var="foodDetailInfo">
+                <a href="#" onclick="showFoodDetail('${orderva.id}_ID')">查看详情</a>
+                <div class="foodDetailsDiv" id="${orderva.id}_ID">
+                    <table class="table table-striped table-bordered table-condensed" id="table_u">
                         <tr>
-                            <td>${foodDetailInfo.foodName}</td>
-                            <td>${foodDetailInfo.foodCategoryName}</td>
-                            <td>${foodDetailInfo.foodPrice}</td>
-                            <td>${foodDetailInfo.foodCount}</td>
+                            <td>菜品名称</td>
+                            <td>所属分类</td>
+                            <td>单价</td>
+                            <td>数量</td>
                         </tr>
-                    </c:forEach>
-                </table>
+                        <c:forEach items="${orderva.foodDetailInfoList}" var="foodDetailInfo">
+                            <tr>
+                                <td>${foodDetailInfo.foodName}</td>
+                                <td>${foodDetailInfo.foodCategoryName}</td>
+                                <td>${foodDetailInfo.foodPrice}</td>
+                                <td>${foodDetailInfo.foodCount}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
             </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
 <div class="pagination">${page}</div>
+<%-- 菜品详情 start --%>
+<div id="foodDetailsModal" style="width:600px;" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="foodDetailsModalLabel" aria-hidden="true" style="width:880px;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 id="userAddressModalLabel">消费明细</h5>
+    </div>
+    <div class="modal-body" id="foodDetailsModal_body_div">
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>
+    </div>
+</div>
+<%-- 菜品详情 end --%>
 </body>
 </html>

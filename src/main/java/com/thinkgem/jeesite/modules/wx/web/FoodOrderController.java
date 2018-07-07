@@ -92,4 +92,33 @@ public class FoodOrderController extends BaseController {
         return "modules/wx/orderList";
     }
 
+    /**
+     * 业绩统计list
+     */
+    @RequiresPermissions("wx:order:view")
+    @RequestMapping(value = "achievementList")
+    public String achievementList(Order order, HttpServletRequest request, HttpServletResponse response, Model model) {
+        // 判断当前用户是否是店长
+        String officeId = UserUtils.getUser().getOffice().getId();
+        if ("d2716364f6d247af8748d873b9ace9cb".equals(officeId)) {
+            // 查询出店铺id
+            Store store = storeService.getByUserId(UserUtils.getUser().getId());
+            if (null == store) {
+                logger.error("你好，你还不是某店铺的管理员，或者你所管理的店铺已被超级管理员删除，请联系超级管理员！");
+                model.addAttribute("message", "你好，你还不是某店铺的管理员，或者你所管理的店铺已被超级管理员删除，请联系超级管理员！");
+                return "modules/wx/noOperationPermissions";
+            }
+            order.setStoreId(store.getId());
+            order.setStoreName(store.getName());
+        }
+
+        // 按店铺分组查询总额
+
+
+
+
+        model.addAttribute("order", order);
+        return "modules/wx/achievementList";
+    }
+
 }
