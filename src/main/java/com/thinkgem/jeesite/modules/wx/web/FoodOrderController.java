@@ -4,11 +4,13 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wx.entity.Order;
+import com.thinkgem.jeesite.modules.wx.entity.Order2Food;
 import com.thinkgem.jeesite.modules.wx.entity.Store;
 import com.thinkgem.jeesite.modules.wx.service.FoodCategoryService;
 import com.thinkgem.jeesite.modules.wx.service.FoodService;
 import com.thinkgem.jeesite.modules.wx.service.OrderService;
 import com.thinkgem.jeesite.modules.wx.service.StoreService;
+import com.thinkgem.jeesite.modules.wx.utils.JsonUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +80,8 @@ public class FoodOrderController extends BaseController {
         if (CollectionUtils.isNotEmpty(orderList)) {
             for (Order param : orderList) {
                 String foodDetail = param.getFoodDetail();
-                // List<Order2Food> foodDetailInfos = JsonUtils.Str2List(foodDetail, Order2Food.class);
-                // param.setFoodDetailInfoList(foodDetailInfos);
+                 List<Order2Food> foodDetailInfos = JsonUtils.Str2List(foodDetail, Order2Food.class);
+                 param.setFoodDetailInfoList(foodDetailInfos);
             }
         }
 

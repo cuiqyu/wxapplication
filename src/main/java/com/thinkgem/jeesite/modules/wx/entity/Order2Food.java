@@ -13,7 +13,7 @@ public class Order2Food implements Serializable {
     private int foodCount;
     private double foodPrice;
     private String foodCategoryId;
-    private String FoodCategoryName;
+    private String foodCategoryName;
 
     public String getId() {
         return id;
@@ -72,10 +72,10 @@ public class Order2Food implements Serializable {
     }
 
     public String getFoodCategoryName() {
-        return FoodCategoryName;
+        return foodCategoryName;
     }
 
     public void setFoodCategoryName(String foodCategoryName) {
-        FoodCategoryName = foodCategoryName;
+        this.foodCategoryName = foodCategoryName;
     }
 }
