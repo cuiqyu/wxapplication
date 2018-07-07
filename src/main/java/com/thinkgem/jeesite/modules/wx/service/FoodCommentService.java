@@ -3,7 +3,10 @@
  */
 package com.thinkgem.jeesite.modules.wx.service;
 
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.wx.dao.FoodCommentDao;
+import com.thinkgem.jeesite.modules.wx.dao.StoreDao;
 import com.thinkgem.jeesite.modules.wx.entity.FoodComment;
 import com.thinkgem.jeesite.modules.wx.entity.vo.PostFoodCommentVo;
 import com.thinkgem.jeesite.modules.wx.utils.UUIDUtils;
@@ -22,7 +25,7 @@ import java.util.List;
  * @version 2018-06-04
  */
 @Service
-public class FoodCommentService {
+public class FoodCommentService extends CrudService<FoodCommentDao, FoodComment> {
 
     private final static Logger logger = LoggerFactory.getLogger(FoodCommentService.class);
 
@@ -55,5 +58,14 @@ public class FoodCommentService {
        return foodCommentDao.listFoodCommentByFoodId(foodId, limit, offset);
     }
 
+    /**
+     * 分页查询评价信息
+     * @param page 分页对象
+     * @param foodComment
+     * @return
+     */
+    public Page<FoodComment> findPage(Page<FoodComment> page, FoodComment foodComment) {
+        return super.findPage(page, foodComment);
+    }
 
 }
