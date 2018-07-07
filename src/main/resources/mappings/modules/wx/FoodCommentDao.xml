@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.wx.dao.FoodCommentDao">
 
-    <sql id="storeColumns">
+    <sql id="commentColumns">
         a.id AS "id",
         a.food_id AS "foodId",
         a.store_id AS "storeId",
@@ -21,7 +21,7 @@
 
     <select id="listFoodCommentByFoodId" resultType="com.thinkgem.jeesite.modules.wx.entity.FoodComment">
         select
-        <include refid="storeColumns"/>
+        <include refid="commentColumns"/>
         from wx_food_comment a
         where a.food_id = #{foodId}
         order by create_at desc
@@ -32,7 +32,7 @@
 
     <select id="findList" resultType="FoodComment">
         SELECT
-        <include refid="storeColumns"/>
+        <include refid="commentColumns"/>
         FROM wx_food_comment a
         <where>
             <if test="customerName != null and customerName != ''">

@@ -1,6 +1,10 @@
 package com.thinkgem.jeesite.modules.wx.entity;
 
-public class Order2Food {
+import java.io.Serializable;
+
+public class Order2Food implements Serializable {
+
+    private static final long serialVersionUID = -3078069398037132040L;
 
     private String id;
     private String orderId;
