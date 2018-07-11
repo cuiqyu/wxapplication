@@ -126,7 +126,7 @@ public class OrderService extends CrudService<OrderDao, Order> {
             order2Food.setFoodCount(foodMap.get(food.getId()));
             order2Food.setFoodPrice(food.getPrice().doubleValue());
             order2Food.setFoodCategoryId(food.getCategoryId());
-            order2Food.setFoodCategoryName(food.getCategoryName());
+            order2Food.setFoodCategoryName(categoryMap.get(food.getCategoryId()));
             order2Foods.add(order2Food);
         }
         String foodDetail = JsonUtils.List2Str(order2Foods);
