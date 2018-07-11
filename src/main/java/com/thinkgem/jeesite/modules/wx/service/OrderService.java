@@ -48,6 +48,9 @@ public class OrderService extends CrudService<OrderDao, Order> {
     @Autowired
     private StoreService storeService;
 
+    @Autowired
+    private FoodCategoryService foodCategoryService;
+
     /**
      * 创建订单
      *
@@ -58,6 +61,13 @@ public class OrderService extends CrudService<OrderDao, Order> {
     public OrderVo addOrder(PostOrder postOrder) {
         //查找本店库里所有菜品id
         List<Food> foodList = foodService.listAllFood(postOrder.getStoreId());
+        //查询该店的所有分类信息
+        List<FoodCategory> foodCategoryList = foodCategoryService.listAllFoodCategory(postOrder.getStoreId());
+        Map<String, String> categoryMap = new HashMap<>();
+        for (FoodCategory foodCategory : foodCategoryList) {
+            categoryMap.put(foodCategory.getId(), foodCategory.getName());
+        }
+
         //用户点菜菜品id和数量map
         Map<String, Integer> foodMap = postOrder.getFoodMap();
         //用户点菜菜品id列表

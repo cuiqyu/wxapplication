@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonUtils {
-    public static String segSymbols = ",";//分割符号
+    public static String segSymbols = "##segSymbols##";//分割符号
 
     public static String Object2String(Object obj) {
         Preconditions.checkArgument(obj != null, "序列化对象为null");

@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.wx.dao.FoodCommentDao">
 
+    <sql id="commentColumns">
+        a.id AS "id",
+        a.food_id AS "foodId",
+        a.store_id AS "storeId",
+        a.star AS "star",
+        a.content AS "content",
+        a.customer_wx_id AS "customerWxId",
+        a.customer_name AS "customerName",
+        a.create_at AS "createDate"
+    </sql>
+
     <insert id="foodComment">
         insert into wx_food_comment
         (id,food_id,store_id,star,content,customer_wx_id,customer_name,create_at)
@@ -9,12 +20,51 @@
     </insert>
 
     <select id="listFoodCommentByFoodId" resultType="com.thinkgem.jeesite.modules.wx.entity.FoodComment">
-        select *
-        from wx_food_comment
-        where food_id = #{foodId}
+        select
+        <include refid="commentColumns"/>
+        from wx_food_comment a
+        where a.food_id = #{foodId}
         order by create_at desc
         <if test="null != pageNo and null != pageSize">
             limit #{pageSize} offset #{pageNo}
         </if>
     </select>
+
+    <select id="findList" resultType="FoodComment">
+        SELECT
+        <include refid="commentColumns"/>
+        FROM wx_food_comment a
+        <where>
+            <if test="customerName != null and customerName != ''">
+                AND a.customer_name LIKE
+                <if test="dbName == 'oracle'">'%'||#{customerName}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{customerName}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{customerName},'%')</if>
+            </if>
+            <if test="foodId != null and foodId != ''">
+                AND a.food_id = #{foodId}
+            </if>
+            <if test="storeId != null and storeId != ''">
+                AND a.store_id = #{storeId}
+            </if>
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="customerWxId != null and customerWxId != ''">
+                AND a.customer_wx_id = #{customerWxId}
+            </if>
+            <if test="star != null and star != ''">
+                AND a.star = #{star}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.create_at desc
+            </otherwise>
+        </choose>
+    </select>
+
 </mapper>

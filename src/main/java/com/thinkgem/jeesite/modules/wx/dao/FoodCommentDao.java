@@ -1,5 +1,6 @@
 package com.thinkgem.jeesite.modules.wx.dao;
 
+import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wx.entity.FoodComment;
 import com.thinkgem.jeesite.modules.wx.entity.Order;
@@ -16,7 +17,7 @@ import java.util.List;
  * @version 2018-06-04
  */
 @MyBatisDao
-public interface FoodCommentDao {
+public interface FoodCommentDao extends CrudDao<FoodComment> {
 
     boolean foodComment(PostFoodCommentVo postFoodCommentVo);
 

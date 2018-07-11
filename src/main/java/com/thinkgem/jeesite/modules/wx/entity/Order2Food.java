@@ -1,6 +1,10 @@
 package com.thinkgem.jeesite.modules.wx.entity;
 
-public class Order2Food {
+import java.io.Serializable;
+
+public class Order2Food implements Serializable {
+
+    private static final long serialVersionUID = -3078069398037132040L;
 
     private String id;
     private String orderId;
@@ -10,7 +14,7 @@ public class Order2Food {
     private int foodCount;
     private double foodPrice;
     private String foodCategoryId;
-    private String FoodCategoryName;
+    private String foodCategoryName;
 
     public String getId() {
         return id;
@@ -69,11 +73,11 @@ public class Order2Food {
     }
 
     public String getFoodCategoryName() {
-        return FoodCategoryName;
+        return foodCategoryName;
     }
 
     public void setFoodCategoryName(String foodCategoryName) {
-        FoodCategoryName = foodCategoryName;
+        this.foodCategoryName = foodCategoryName;
     }
 
     public String getFoodPicture() {

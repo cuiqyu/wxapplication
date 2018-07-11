@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thinkgem.jeesite.modules.wx.dao.OrderDao">
 
+    <sql id="orderColumns">
+        a.id AS "id",
+        a.amount AS "amount",
+        a.state AS "state",
+        a.customer_name AS "customerName",
+        a.customer_wx_id AS "customerWxId",
+        a.store_id AS "storeId",
+        a.create_at AS "createAt",
+        a.create_month AS "createDay",
+        a.create_month AS "createMonth",
+        a.food_detail AS "foodDetail"
+    </sql>
+
     <insert id="addOrder" >
         INSERT INTO wx_ordel(
             id,
@@ -49,4 +62,48 @@
         from wx_ordel
         where id = #{orderId}
     </select>
+
+    <select id="findList" resultType="Order">
+        SELECT
+        <include refid="orderColumns"/>
+        FROM wx_ordel a
+        <where>
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="amount != null">
+                AND a.amount = #{amount}
+            </if>
+            <if test="state != null">
+                AND a.state = #{state}
+            </if>
+            <if test="customerName != null and customerName != ''">
+                AND a.customer_name LIKE
+                <if test="dbName == 'oracle'">'%'||#{customerName}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{customerName}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{customerName},'%')</if>
+            </if>
+            <if test="customerWxId != null and customerWxId != ''">
+                AND a.customer_wx_id = #{customerWxId}
+            </if>
+            <if test="storeId != null and storeId != ''">
+                AND a.store_id = #{storeId}
+            </if>
+            <if test="createDay != null and createDay != ''">
+                AND a.create_day = #{createDay}
+            </if>
+            <if test="createMonth != null and createMonth != ''">
+                AND a.create_month = #{createMonth}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.create_at desc
+            </otherwise>
+        </choose>
+    </select>
+
 </mapper>

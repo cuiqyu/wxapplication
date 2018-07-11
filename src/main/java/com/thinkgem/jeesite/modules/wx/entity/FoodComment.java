@@ -1,9 +1,13 @@
 package com.thinkgem.jeesite.modules.wx.entity;
 
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+
 /**
  * 客户 提交评论vo
  */
-public class FoodComment {
+public class FoodComment extends DataEntity<FoodComment> {
+
+    private static final long serialVersionUID = -1501734531203828472L;
 
     private String foodId;
     private String storeId;
@@ -11,6 +15,11 @@ public class FoodComment {
     private String content;
     private String customerName;
     private String customerWxId;
+
+    // 附加字段
+    private boolean isShopowner; // 是否是店长
+    private String storeName; // 店铺名称
+    private String foodName; // 菜品名称
 
     public String getFoodId() {
         return foodId;
@@ -59,4 +68,29 @@ public class FoodComment {
     public void setCustomerWxId(String customerWxId) {
         this.customerWxId = customerWxId;
     }
+
+    public boolean getIsShopowner() {
+        return isShopowner;
+    }
+
+    public void setIsShopowner(boolean shopowner) {
+        isShopowner = shopowner;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getFoodName() {
+        return foodName;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
+    }
+
 }
