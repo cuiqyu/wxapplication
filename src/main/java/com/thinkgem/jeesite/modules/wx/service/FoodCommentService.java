@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class FoodCommentService extends CrudService<FoodCommentDao, FoodComment>
      * @param postFoodCommentVos
      * @return
      */
+    @Transactional(readOnly = false)
     public boolean foodComment(List<PostFoodCommentVo>  postFoodCommentVos) {
         for (PostFoodCommentVo postFoodCommentVo : postFoodCommentVos) {
             postFoodCommentVo.setId(UUIDUtils.timeBasedStr());
@@ -48,7 +50,7 @@ public class FoodCommentService extends CrudService<FoodCommentDao, FoodComment>
     /**
      * 根据菜品id获取评论
      */
-    public List<FoodComment>  listFoodCommentByFoodId(String foodId, Integer pageSize, Integer pageNo) {
+    public List<FoodComment> listFoodCommentByFoodId(String foodId, Integer pageSize, Integer pageNo) {
         if ((null != pageSize && pageSize <= 0) || (null != pageNo && pageNo <= 0)) {
             logger.info("分页查询菜品评价信息失败，pageSize和pageNo都不能小于1！");
             return new LinkedList<>();
