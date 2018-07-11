@@ -6,6 +6,7 @@ public class Order2Food {
     private String orderId;
     private String foodId;
     private String foodName;
+    private String foodPicture;
     private int foodCount;
     private double foodPrice;
     private String foodCategoryId;
@@ -73,5 +74,13 @@ public class Order2Food {
 
     public void setFoodCategoryName(String foodCategoryName) {
         FoodCategoryName = foodCategoryName;
+    }
+
+    public String getFoodPicture() {
+        return foodPicture;
+    }
+
+    public void setFoodPicture(String foodPicture) {
+        this.foodPicture = foodPicture;
     }
 }

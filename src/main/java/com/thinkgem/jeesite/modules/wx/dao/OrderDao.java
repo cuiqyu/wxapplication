@@ -4,6 +4,7 @@ import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wx.entity.Order;
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
+import com.thinkgem.jeesite.modules.wx.entity.vo.OrderListVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

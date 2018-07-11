@@ -7,6 +7,7 @@ import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.wx.constant.OrderState;
 import com.thinkgem.jeesite.modules.wx.constant.WechatConstant;
 import com.thinkgem.jeesite.modules.wx.entity.*;
+import com.thinkgem.jeesite.modules.wx.entity.vo.OrderListVo;
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderVo;
 import com.thinkgem.jeesite.modules.wx.utils.HttpUtils;
 import com.thinkgem.jeesite.modules.wx.utils.MD5Util;
@@ -110,10 +111,12 @@ public class OrderService extends CrudService<OrderDao, Order> {
             Order2Food order2Food = new Order2Food();
             order2Food.setOrderId(id);
             order2Food.setFoodId(food.getId());
+            order2Food.setFoodName(food.getName());
+            order2Food.setFoodPicture(food.getPicture());
             order2Food.setFoodCount(foodMap.get(food.getId()));
+            order2Food.setFoodPrice(food.getPrice().doubleValue());
             order2Food.setFoodCategoryId(food.getCategoryId());
             order2Food.setFoodCategoryName(food.getCategoryName());
-            order2Food.setFoodPrice(food.getPrice().doubleValue());
             order2Foods.add(order2Food);
         }
         String foodDetail = JsonUtils.List2Str(order2Foods);

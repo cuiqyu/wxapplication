@@ -1,6 +1,7 @@
 package com.thinkgem.jeesite.modules.wx.rest;
 
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
+import com.thinkgem.jeesite.modules.wx.entity.vo.OrderListVo;
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderVo;
 import com.thinkgem.jeesite.modules.wx.entity.vo.PostOrder;
 import com.thinkgem.jeesite.modules.wx.service.OrderService;

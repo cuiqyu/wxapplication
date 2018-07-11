@@ -14,7 +14,7 @@ public class OrderDetail {
     private String storeId;
     private String state;
     private Date createAt;
-    private String order2FoodList;
+    private String foodDetail;
     private OrderState orderState;
 
     public String getId() {
@@ -49,12 +49,12 @@ public class OrderDetail {
         this.createAt = createAt;
     }
 
-    public String getOrder2FoodList() {
-        return order2FoodList;
+    public String getFoodDetail() {
+        return foodDetail;
     }
 
-    public void setOrder2FoodList(String order2FoodList) {
-        this.order2FoodList = order2FoodList;
+    public void setFoodDetail(String foodDetail) {
+        this.foodDetail = foodDetail;
     }
 
     public OrderState getOrderState() {
