@@ -18,6 +18,7 @@
             orderTimeType();
             $("#orderTimeType").on("change", function() {
                 orderTimeType();
+                $(".tdl").html("");
             });
 
         });
@@ -50,26 +51,26 @@
     <li class="active"><a href="${ctx}/wx/order/achievementList">订单业绩统计</a></li>
     <li><a href="${ctx}/wx/order/list">订单列表信息</a></li>
 </ul>
-<form:form id="searchForm" modelAttribute="order" action="${ctx}/wx/order/achievementList" method="post" class="breadcrumb form-search">
-</form:form>
 <sys:message content="${message}"/>
 <table id="contentTable" class="table table-striped table-bordered table-condensed">
     <tr>
         <th rowspan="2" colspan="2">店铺名称</th>
         <th rowspan="2" width="50px;">店铺总营业额</th>
         <th colspan="32" style="text-align:center;">
-            查询方式：
-            <select name="orderTimeType" id="orderTimeType">
-                <option value="year">按年查</option>
-                <option value="month">按月查</option>
-            </select>
-            <input id="yearInput" name="createYear" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-                   value="<fmt:formatDate value="${order.createYear}" pattern="yyyy-MM"/>"
-                   onclick="WdatePicker({dateFmt:'yyyy-MM',isShowClear:true});"/>
-            <input id="monthInput" name="createMonth" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-                   value="<fmt:formatDate value="${order.createMonth}" pattern="yyyy-MM-dd"/>"
-                   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
-            <input type="button" class="btn btn-primary" value="查询" onclick=""/>
+            <form:form id="searchForm" modelAttribute="order" action="${ctx}/wx/order/achievementList" method="post" class="breadcrumb form-search">
+                查询方式：
+                <form:select path="orderTimeType" id="orderTimeType">
+                    <form:option value="year">按年查</form:option>
+                    <form:option value="month">按月查</form:option>
+                </form:select>
+                <input id="yearInput" name="createYear" type="text" maxlength="20" class="input-medium Wdate"
+                       value="<fmt:formatDate value="${order.createYear}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+                       onclick="WdatePicker({dateFmt:'yyyy-01-01 00:00:00',isShowClear:true});"/>
+                <input id="monthInput" name="createMonth" type="text" maxlength="20" class="input-medium Wdate"
+                       value="<fmt:formatDate value="${order.createMonth}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+                       onclick="WdatePicker({dateFmt:'yyyy-MM-01 00:00:00',isShowClear:true});"/>
+                <input type="submit" class="btn btn-primary" value="查询"/>
+            </form:form>
         </th>
     </tr>
     <tr>
@@ -106,79 +107,57 @@
         <th class="day">31日</th>
         <th>按<span class="tipCount"></span>总计</th>
     </tr>
-    <tr>
-        <td rowspan="2" width="100px;">店铺B</td>
-        <th class="green" width="50px;">总已支付RMB</th>
-        <td class="green">10000000000</td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl day green"></td>
-        <td class="tdl green"></td>
-    </tr>
-    <tr style="color: red;">
-        <th>总待支付RMB</th>
-        <td>100000000</td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="day tdl"></td>
-        <td class="tdl"></td>
-    </tr>
+    <c:forEach items="${storeMap}" var="storeMapVar">
+        <tr>
+            <td rowspan="2" width="100px;">${storeMapVar.value}</td>
+            <th class="green" width="50px;">总已支付RMB</th>
+            <td class="green">
+                <c:choose>
+                    <c:when test="${not empty orderTotalAmountMap.get(storeMapVar.key) and not empty orderTotalAmountMap.get(storeMapVar.key).get(orderStateMap.get('paid'))}">
+                        ${orderTotalAmountMap.get(storeMapVar.key).get(orderStateMap.get('paid'))}
+                    </c:when>
+                    <c:otherwise>0.00</c:otherwise>
+                </c:choose>
+            </td>
+            <c:forEach items="${oneTo12}" var="oneTo12Var">
+                <td class="tdl green">
+                    ${orderTotalDetailAmountMap.get(storeMapVar.key).get(orderStateMap.get('paid')).get(oneTo12Var)}
+                </td>
+            </c:forEach>
+            <c:forEach items="${ttTo31}" var="ttTo31Var">
+                <td class="tdl day green">
+                    ${orderTotalDetailAmountMap.get(storeMapVar.key).get(orderStateMap.get('paid')).get(ttTo31Var)}
+                </td>
+            </c:forEach>
+            <td class="tdl green">
+                ${orderTotalDetailAmountMap.get(storeMapVar.key).get(orderStateMap.get('paid')).get('32')}
+            </td>
+        </tr>
+        <tr style="color: red;">
+            <th>总待支付RMB</th>
+            <td>
+                <c:choose>
+                    <c:when test="${not empty orderTotalAmountMap.get(storeMapVar.key) and not empty orderTotalAmountMap.get(storeMapVar.key).get(orderStateMap.get('unpaid'))}">
+                        ${orderTotalAmountMap.get(storeMapVar.key).get(orderStateMap.get('unpaid'))}
+                    </c:when>
+                    <c:otherwise>0.00</c:otherwise>
+                </c:choose>
+            </td>
+            <c:forEach items="${oneTo12}" var="oneTo12Var">
+                <td class="tdl">
+                    ${orderTotalDetailAmountMap.get(storeMapVar.key).get(orderStateMap.get('unpaid')).get(oneTo12Var)}
+                </td>
+            </c:forEach>
+            <c:forEach items="${ttTo31}" var="ttTo31Var">
+                <td class="tdl day">
+                    ${orderTotalDetailAmountMap.get(storeMapVar.key).get(orderStateMap.get('unpaid')).get(ttTo31Var)}
+                </td>
+            </c:forEach>
+            <td class="tdl">
+                ${orderTotalDetailAmountMap.get(storeMapVar.key).get(orderStateMap.get('unpaid')).get('32')}
+            </td>
+        </tr>
+    </c:forEach>
 </table>
 </body>
 </html>

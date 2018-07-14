@@ -7,14 +7,11 @@ import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.wx.constant.OrderState;
 import com.thinkgem.jeesite.modules.wx.constant.WechatConstant;
 import com.thinkgem.jeesite.modules.wx.entity.*;
-import com.thinkgem.jeesite.modules.wx.entity.vo.OrderListVo;
-import com.thinkgem.jeesite.modules.wx.entity.vo.OrderVo;
+import com.thinkgem.jeesite.modules.wx.entity.vo.*;
 import com.thinkgem.jeesite.modules.wx.utils.HttpUtils;
 import com.thinkgem.jeesite.modules.wx.utils.MD5Util;
 import com.thinkgem.jeesite.modules.wx.utils.JsonUtils;
 import com.thinkgem.jeesite.modules.wx.dao.OrderDao;
-import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
-import com.thinkgem.jeesite.modules.wx.entity.vo.PostOrder;
 import com.thinkgem.jeesite.modules.wx.utils.UUIDUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -243,5 +240,22 @@ public class OrderService extends CrudService<OrderDao, Order> {
         return orderDao.updateState(orderDetail.getId());
     }
 
+    /**
+     * 查询店铺总营业额
+     * @param order
+     * @return
+     */
+    public List<StoreOrderTotalAmountVo> findStoreTotalAmount(Order order) {
+        return orderDao.findStoreTotalAmount(order);
+    }
+
+    /**
+     * 查询店铺详细的业绩总营业额
+     * @param order
+     * @return
+     */
+    public List<StoreOrderTotalAmountVo> findStoreTotalDetailAmount(Order order) {
+        return orderDao.findStoreTotalDetailAmount(order);
+    }
 
 }

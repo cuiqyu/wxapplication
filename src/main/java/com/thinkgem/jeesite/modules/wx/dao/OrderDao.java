@@ -5,6 +5,7 @@ import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wx.entity.Order;
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderDetail;
 import com.thinkgem.jeesite.modules.wx.entity.vo.OrderListVo;
+import com.thinkgem.jeesite.modules.wx.entity.vo.StoreOrderTotalAmountVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -25,4 +26,9 @@ public interface OrderDao extends CrudDao<Order> {
     OrderDetail findById(@Param("orderId") String orderId);
 
     int updateState(@Param("id") String id);
+
+    List<StoreOrderTotalAmountVo> findStoreTotalAmount(Order order);
+
+    List<StoreOrderTotalAmountVo> findStoreTotalDetailAmount(Order order);
+
 }

@@ -105,5 +105,53 @@
             </otherwise>
         </choose>
     </select>
+    <select id="findStoreTotalAmount" resultType="com.thinkgem.jeesite.modules.wx.entity.vo.StoreOrderTotalAmountVo">
+        select sum(amount) AS 'totalAmount', state, store_id AS 'storeId' from wx_ordel
+        <where>
+            <if test="storeId != null and storeId != ''">
+                AND store_id = #{storeId}
+            </if>
+        </where>
+        GROUP BY store_id, state;
+    </select>
+    <select id="findStoreTotalDetailAmount" resultType="com.thinkgem.jeesite.modules.wx.entity.vo.StoreOrderTotalAmountVo">
+        SELECT
+            sum(amount) AS 'totalAmount',
+            state,
+            store_id AS 'storeId',
+            <choose>
+                <when test="orderTimeType == 'year'">
+                    DATE_FORMAT(create_month, '%m') as number
+                </when>
+                <otherwise>
+                    DATE_FORMAT(create_day, '%d') AS 'number'
+                </otherwise>
+            </choose>
+        FROM wx_ordel
+        <where>
+            <choose>
+                <when test="orderTimeType == 'year'">
+                    create_month &gt;= #{createYear} AND create_month &lt; #{createYearEnd}
+                </when>
+                <otherwise>
+                    create_month = #{createMonth}
+                </otherwise>
+            </choose>
+            <if test="storeId != null and storeId != ''">
+                AND store_id = #{storeId}
+            </if>
+        </where>
+        GROUP BY
+            store_id,
+            state,
+            <choose>
+                <when test="orderTimeType == 'year'">
+                    create_month;
+                </when>
+                <otherwise>
+                    create_day;
+                </otherwise>
+            </choose>
+    </select>
 
 </mapper>
