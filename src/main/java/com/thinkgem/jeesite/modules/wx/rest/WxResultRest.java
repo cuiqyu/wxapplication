@@ -7,6 +7,7 @@ import com.thinkgem.jeesite.modules.wx.entity.vo.WxResultResponceVo;
 import com.thinkgem.jeesite.modules.wx.entity.vo.WxResultVo;
 import com.thinkgem.jeesite.modules.wx.service.OrderService;
 import com.thinkgem.jeesite.modules.wx.utils.HttpUtils;
+import com.thinkgem.jeesite.modules.wx.utils.JsonUtils;
 import com.thinkgem.jeesite.modules.wx.utils.MD5Util;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -45,6 +46,9 @@ public class WxResultRest {
             wxResultResponceVo.setReturn_code("SUCCESS");
             wxResultResponceVo.setReturn_msg("OK");
             logger.info("recive wx callback");
+            // // 消息推送
+            // pushMessage(wxResultVo);
+
             return HttpUtils.beanToXml(wxResultResponceVo);
         } catch (IOException e) {
             WxResultResponceVo wxResultResponceVo = new WxResultResponceVo();
@@ -96,6 +100,52 @@ public class WxResultRest {
 //            orderDao.addOrder(order);
 //        }
         return true;
-
     }
+
+    /**
+     * 消息推送
+     * @param wxResultVo
+     */
+    private void pushMessage(WxResultVo wxResultVo) {
+        logger.info("push message to user start--param:{}", JsonUtils.Object2String(wxResultVo));
+        if (null == wxResultVo) {
+            logger.info("push message to user end--result:{}", "推送失败，参数为空");
+            return;
+        }
+
+        // 获取我们的accessToken
+        String getAccessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret;
+        String accessTokenResult = HttpUtils.post(getAccessTokenUrl, null);
+        AccessToken accessToken = HttpUtils.xmlToBean(AccessToken.class, accessTokenResult);
+        if (null == accessToken) {
+            logger.info("push message to user end--result:{}", "推送失败，获取小程序的accessToken失败");
+            return;
+        }
+
+        // 给用户推送消息
+        String pushUrl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + accessToken.getAccess_token();
+        SendMessageVo message = new SendMessageVo();
+        message.setTouser(wxResultVo.getOpenid());
+        message.setTemplate_id(order_pay_success_template_id); // 支付成功 TODO
+        message.setEmphasis_keyword("keyword1.DATA"); // 订单号加粗
+        message.setForm_id(""); // TODO
+        // 构建模板对象
+        SendMessageDateVo sendMessageDateVo = new SendMessageDateVo();
+        sendMessageDateVo.setKeyword1(new KeyWord("")); // 订单id TODO
+        sendMessageDateVo.setKeyword2(new KeyWord("")); // 支付金额 TODO
+        // sendMessageDateVo.setKeyword3(new KeyWord("")); // 支付方式 TODO
+        sendMessageDateVo.setKeyword4(new KeyWord("")); // 订单时间 TODO
+        // sendMessageDateVo.setKeyword5(new KeyWord("")); // 下单门店 TODO
+        sendMessageDateVo.setKeyword6(new KeyWord("")); // 桌位号 TODO
+
+        message.setData(JsonUtils.Object2String(sendMessageDateVo)); // 模板内容
+        String sendMessageResult = HttpUtils.post(pushUrl, message);
+        SendMessageResultVo sendMessageResultVo = HttpUtils.xmlToBean(SendMessageResultVo.class, sendMessageResult);
+        if (sendMessageResultVo.getErrcode() == 0) {
+            logger.info("push message to user end--result:{}", "success");
+        } else {
+            logger.info("push message to user end--result:error:{}", sendMessageResultVo.getErrmsg());
+        }
+    }
+
 }

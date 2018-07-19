@@ -89,6 +89,17 @@
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
+        <!-- 条形码、二维码生成 -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>2.2</version>
+        </dependency>
 		<!-- SPRING begin -->
 		<dependency>
 			<groupId>org.springframework</groupId>

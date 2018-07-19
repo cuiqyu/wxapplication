@@ -7,8 +7,8 @@ public class WechatConstant {
     //微信分配的小程序ID
     public static final String appid = "wx90e34a4cc94f201e";
 
-    //微信分配的小程序ID
-    public static final String appSecret = "1068f4d305f1f0b133ad11d3da5e825c";
+    //秘钥
+    public static final String secret = "1068f4d305f1f0b133ad11d3da5e825c";
 
     //key
     public static final String key = "123456789123456789123456789abcde";
@@ -30,4 +30,11 @@ public class WechatConstant {
 
     //小程序取值如下：JSAPI，详细说明见参数规定
     public static final String trade_type = "JSAPI";
+
+    //支付成功的消息模板id
+    public static final String order_pay_success_template_id = "9hW0Nzw89l0qcBo_lOJ8Sl0VN2MPmA2AjA_aKuuCyu4";
+
+    //支付失败的消息模板id
+    public static final String order_pay_fail_template_id = "s7u-_XMSUjjOPy4YSN3FhLG9jPrbBcjXsXYmqFDEjx8";
+
 }
