@@ -1,8 +1,8 @@
 package com.thinkgem.jeesite.modules.wx.rest;
 
-import com.thinkgem.jeesite.modules.wx.entity.PostWxOrder;
-import com.thinkgem.jeesite.modules.wx.entity.vo.OrderVo;
+import com.thinkgem.jeesite.modules.wx.entity.PostWxAuth;
 import com.thinkgem.jeesite.modules.wx.entity.vo.QueryOrderStateVo;
+import com.thinkgem.jeesite.modules.wx.entity.vo.WxAuthVo;
 import com.thinkgem.jeesite.modules.wx.entity.vo.WxResultResponceVo;
 import com.thinkgem.jeesite.modules.wx.entity.vo.WxResultVo;
 import com.thinkgem.jeesite.modules.wx.service.OrderService;
@@ -52,6 +52,24 @@ public class WxResultRest {
             wxResultResponceVo.setReturn_msg("参数格式校验错误");
             return HttpUtils.beanToXml(wxResultResponceVo);
         }
+    }
+
+    /**
+     * 小程序查询订单状态
+     */
+    @RequestMapping(value = "/auth", method = {RequestMethod.GET})
+    public String wxAuth(@RequestParam("code") String code) {
+
+        //----------------------------调用微信登录凭证校验---------------------------
+        //https://developers.weixin.qq.com/miniprogram/dev/api/api-login.html#wxloginobject
+        PostWxAuth postWxAuth = new PostWxAuth(code);
+        String string = "https://api.weixin.qq.com/sns/jscode2session";
+        String url = string + "?" + "appid=" + postWxAuth.getAppid()
+            + "&" + "secret=" + postWxAuth.getSecret() + "&" + "js_code=" + postWxAuth.getJs_code()
+            + "&" + "grant_type=" + postWxAuth.getGrant_type();
+        String aa = HttpUtils.post(url, postWxAuth);
+        return aa;
+
     }
 
 
