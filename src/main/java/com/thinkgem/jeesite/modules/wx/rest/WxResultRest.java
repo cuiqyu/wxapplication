@@ -1,10 +1,7 @@
 package com.thinkgem.jeesite.modules.wx.rest;
 
 import com.thinkgem.jeesite.modules.wx.entity.PostWxAuth;
-import com.thinkgem.jeesite.modules.wx.entity.vo.QueryOrderStateVo;
-import com.thinkgem.jeesite.modules.wx.entity.vo.WxAuthVo;
-import com.thinkgem.jeesite.modules.wx.entity.vo.WxResultResponceVo;
-import com.thinkgem.jeesite.modules.wx.entity.vo.WxResultVo;
+import com.thinkgem.jeesite.modules.wx.entity.vo.*;
 import com.thinkgem.jeesite.modules.wx.service.OrderService;
 import com.thinkgem.jeesite.modules.wx.utils.HttpUtils;
 import com.thinkgem.jeesite.modules.wx.utils.JsonUtils;
@@ -114,7 +111,7 @@ public class WxResultRest {
         }
 
         // 获取我们的accessToken
-        String getAccessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret;
+        String getAccessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + appSecret;
         String accessTokenResult = HttpUtils.post(getAccessTokenUrl, null);
         AccessToken accessToken = HttpUtils.xmlToBean(AccessToken.class, accessTokenResult);
         if (null == accessToken) {
