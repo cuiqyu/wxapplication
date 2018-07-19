@@ -129,19 +129,6 @@ public class OrderService extends CrudService<OrderDao, Order> {
         String foodDetail = JsonUtils.List2Str(order2Foods);
         order.setFoodDetail(foodDetail);
 
-
-        //----------------------------调用微信登录凭证校验---------------------------
-//        //https://developers.weixin.qq.com/miniprogram/dev/api/api-login.html#wxloginobject
-//        String code = "071KYi5t01zdId1TrP1t0zL55t0KYi5T";
-//        PostWxAuth postWxAuth = new PostWxAuth(code);
-//        String string = "https://api.weixin.qq.com/sns/jscode2session";
-//        String url = string + "?" + "appid=" + postWxAuth.getAppid()
-//            + "&" + "secret=" + postWxAuth.getSecret() + "&" + "js_code=" + postWxAuth.getJs_code()
-//            + "&" + "grant_type=" + postWxAuth.getGrant_type();
-//        String aa = HttpUtils.excute(url);
-//        System.out.println(aa);
-//        return aa;
-
         String nonceStr = WechatConstant.nonce_str;
         String openId = postOrder.getCustomerWxId();
         int totalFee = (int) (amount * 10 * 10);

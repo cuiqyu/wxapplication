@@ -7,6 +7,9 @@ public class WechatConstant {
     //微信分配的小程序ID
     public static final String appid = "wx90e34a4cc94f201e";
 
+    //微信分配的小程序ID
+    public static final String appSecret = "1068f4d305f1f0b133ad11d3da5e825c";
+
     //key
     public static final String key = "123456789123456789123456789abcde";
 

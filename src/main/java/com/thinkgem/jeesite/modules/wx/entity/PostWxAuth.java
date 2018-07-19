@@ -11,7 +11,7 @@ public class PostWxAuth {
 
     public PostWxAuth(String js_code) {
         this.appid = WechatConstant.appid;
-        this.secret = WechatConstant.key;
+        this.secret = WechatConstant.appSecret;
         this.js_code = js_code;
         this.grant_type = "authorization_code";
     }
