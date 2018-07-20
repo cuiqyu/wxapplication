@@ -1,13 +1,16 @@
 package com.thinkgem.jeesite.modules.wx.rest;
 
+import com.google.zxing.WriterException;
 import com.thinkgem.jeesite.modules.wx.entity.Food;
 import com.thinkgem.jeesite.modules.wx.service.FoodService;
+import com.thinkgem.jeesite.modules.wx.utils.QRCodeFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 /**

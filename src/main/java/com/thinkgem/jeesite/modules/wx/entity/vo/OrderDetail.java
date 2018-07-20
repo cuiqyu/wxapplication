@@ -15,6 +15,7 @@ public class OrderDetail {
     private String state;
     private Date createAt;
     private String foodDetail;
+    private String tableNum;
     private OrderState orderState;
 
     public String getId() {
@@ -71,5 +72,13 @@ public class OrderDetail {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getTableNum() {
+        return tableNum;
+    }
+
+    public void setTableNum(String tableNum) {
+        this.tableNum = tableNum;
     }
 }
