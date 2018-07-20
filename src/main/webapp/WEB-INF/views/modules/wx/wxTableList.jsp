@@ -87,7 +87,6 @@
             <c:if test="${!wxTable.isShopowner}">
                 <td class="show_2">${storeMap.get(wxTable.storeId)}</td>
             </c:if>
-            <td>${wxTable.storeId}</td>
             <td><img src="${wxTable.url}"/></td>
             <td><fmt:formatDate value="${wxTable.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
             <td><fmt:formatDate value="${wxTable.updateAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

@@ -119,6 +119,13 @@ public class WxTableController extends BaseController {
             wxTable.setStoreName(store.getName());
         }
 
+        if (!wxTable.getIsShopowner()) { // 查询出所有的店铺
+            List<Store> storeList = storeService.listAllStore();
+            for (Store store : storeList) {
+                storeMap.put(store.getId(), store.getName());
+            }
+        }
+
         model.addAttribute("storeMap", storeMap);
         model.addAttribute("wxTable", wxTable);
         return "modules/wx/wxTableForm";
@@ -126,8 +133,9 @@ public class WxTableController extends BaseController {
 
     @RequiresPermissions("wx:wxTable:edit")
     @RequestMapping(value = "save")
-    public String save(WxTable wxTable, Model model, RedirectAttributes redirectAttributes) {
-        ActionBaseDto actionBaseDto = wxTableService.insert(wxTable);
+    public String save(WxTable wxTable, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        String realPath = request.getSession().getServletContext().getRealPath("/qrimg");
+        ActionBaseDto actionBaseDto = wxTableService.insert(wxTable, realPath);
         if (actionBaseDto.isSuccess()) {
             logger.info("保存桌号成功！");
             addMessage(redirectAttributes, "保存桌号成功");

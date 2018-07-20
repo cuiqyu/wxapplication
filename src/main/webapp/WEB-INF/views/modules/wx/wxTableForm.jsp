@@ -51,9 +51,15 @@
     <c:choose>
         <c:when test="${!wxTable.isShopowner}">
             <div class="control-group">
-                <label class="control-label">所在店铺：</label>
+                <label class="control-label">选择店铺：</label>
                 <div class="controls">
-                    <form:input path="storeId" htmlEscape="false" maxlength="32" class="input-xlarge required"/>
+                    <form:select path="storeId" class="input-medium required">
+                        <form:option value="">--请选择--</form:option>
+                        <c:forEach items="${storeMap}" var="store">
+                            <form:option value="${store.key}">${store.value}</form:option>
+                        </c:forEach>
+                    </form:select>
+                    <span class="help-inline"><font color="red">*</font> </span>
                 </div>
             </div>
         </c:when>
