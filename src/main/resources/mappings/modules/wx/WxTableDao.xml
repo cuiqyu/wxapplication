@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wx.dao.WxTableDao">
+
+    <sql id="wxTableColumns">
+        a.id AS "id",
+        a.table_id AS "tableId",
+        a.table_name AS "tableName",
+        a.store_id AS "storeId",
+        a.url AS "url",
+        a.create_at AS "createAt",
+        a.update_at AS "updateAt"
+    </sql>
+
+    <select id="get" resultType="WxTable">
+        SELECT
+        <include refid="wxTableColumns"/>
+        FROM wx_table a
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="WxTable">
+        SELECT
+        <include refid="wxTableColumns"/>
+        FROM wx_table a
+        <where>
+            <if test="tableId != null and tableId != ''">
+                a.table_id = #{tableId}
+            </if>
+            <if test="tableName != null and tableName != ''">
+                a.table_name = #{tableName}
+            </if>
+            <if test="storeId != null and storeId != ''">
+                a.store_id = #{storeId}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="WxTable">
+        SELECT
+        <include refid="wxTableColumns"/>
+        FROM wx_table a
+        <where>
+
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO wx_table(
+            id,
+            table_id,
+            table_name,
+            store_id,
+            url,
+            create_at,
+            update_at
+        ) VALUES (
+            #{id},
+            #{tableId},
+            #{tableName},
+            #{storeId},
+            #{url},
+            now(),
+            now()
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE wx_table SET
+            table_id = #{tableId},
+            table_name = #{tableName},
+            store_id = #{storeId},
+            url = #{url},
+            update_at = now()
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+        DELETE FROM wx_table
+        WHERE id = #{id}
+    </update>
+
+</mapper>

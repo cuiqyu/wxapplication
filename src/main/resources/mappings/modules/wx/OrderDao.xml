@@ -12,7 +12,8 @@
         a.create_at AS "createAt",
         a.create_month AS "createDay",
         a.create_month AS "createMonth",
-        a.food_detail AS "foodDetail"
+        a.food_detail AS "foodDetail",
+        a.tableNum AS "tableNum"
     </sql>
 
     <insert id="addOrder" >
@@ -26,7 +27,8 @@
             create_at,
             create_day,
             create_month,
-            food_detail
+            food_detail,
+            tableNum
         ) VALUES (
             #{id},
             #{amount},
@@ -37,7 +39,8 @@
             #{createAt},
             #{createDay},
             #{createMonth},
-            #{foodDetail}
+            #{foodDetail},
+            #{tableNum}
         )
     </insert>
     <update id="updateState">

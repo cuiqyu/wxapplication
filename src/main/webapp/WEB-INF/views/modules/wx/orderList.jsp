@@ -150,7 +150,8 @@
     <label class="checkbox-inline showul"><input type="checkbox" class="toggle-vis" data-column="7" checked> 订单月</label>
     <label class="checkbox-inline showul"><input type="checkbox" class="toggle-vis" data-column="8" checked> 订单日</label>
     <label class="checkbox-inline showul"><input type="checkbox" class="toggle-vis" data-column="9" checked> 订单时间</label>
-    <label class="checkbox-inline showul"><input type="checkbox" class="toggle-vis" data-column="10" checked> 消费明细</label>
+    <label class="checkbox-inline showul"><input type="checkbox" class="toggle-vis" data-column="10" checked> 桌号</label>
+    <label class="checkbox-inline showul"><input type="checkbox" class="toggle-vis" data-column="11" checked> 消费明细</label>
 </div>
 <table id="contentTable" class="table table-striped table-bordered table-condensed">
     <thead>
@@ -166,7 +167,8 @@
         <th class="show_7">订单月</th>
         <th class="show_8">订单日</th>
         <th class="show_9">订单时间</th>
-        <th class="show_10">消费明细</th>
+        <th class="show_10">桌号</th>
+        <th class="show_11">消费明细</th>
     </tr>
     </thead>
     <tbody>
@@ -186,7 +188,8 @@
             <td class="show_7"><fmt:formatDate value="${orderva.createAt}" pattern="yyyy-MM"/></td>
             <td class="show_8"><fmt:formatDate value="${orderva.createAt}" pattern="dd"/></td>
             <td class="show_9"><fmt:formatDate value="${orderva.createAt}" pattern="HH:mm:ss"/></td>
-            <td class="show_10">
+            <td class="show_9">${orderva.tableNum}</td>
+            <td class="show_11">
                 <a href="#" onclick="showFoodDetail('${orderva.id}_ID')">查看详情</a>
                 <div class="foodDetailsDiv" id="${orderva.id}_ID">
                     <table class="table table-striped table-bordered table-condensed" id="table_u">

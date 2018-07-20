@@ -37,4 +37,10 @@ public class WechatConstant {
     //支付失败的消息模板id
     public static final String order_pay_fail_template_id = "s7u-_XMSUjjOPy4YSN3FhLG9jPrbBcjXsXYmqFDEjx8";
 
+    // 桌号的统一跳转链接
+    public static final String table_number_jump_link = "pages/list1/list1";
+
+    // 生成的小程序码的宽度，如果想完善的话可以后台设置
+    public static final int qr_code_width = 400;
+
 }

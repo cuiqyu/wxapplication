@@ -3,6 +3,7 @@ package com.thinkgem.jeesite.modules.wx.rest;
 import com.thinkgem.jeesite.modules.wx.entity.PostWxAuth;
 import com.thinkgem.jeesite.modules.wx.entity.vo.*;
 import com.thinkgem.jeesite.modules.wx.service.OrderService;
+import com.thinkgem.jeesite.modules.wx.service.WxService;
 import com.thinkgem.jeesite.modules.wx.utils.HttpUtils;
 import com.thinkgem.jeesite.modules.wx.utils.JsonUtils;
 import com.thinkgem.jeesite.modules.wx.utils.MD5Util;
@@ -19,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 import static com.thinkgem.jeesite.modules.wx.constant.WechatConstant.*;
-import static com.thinkgem.jeesite.modules.wx.constant.WechatConstant.key;
 
 @RestController
 @RequestMapping("/api/wx/result")
@@ -29,6 +29,9 @@ public class WxResultRest {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private WxService wxService;
 
     /**
      * wx支付成功回调
@@ -111,9 +114,7 @@ public class WxResultRest {
         }
 
         // 获取我们的accessToken
-        String getAccessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + appSecret;
-        String accessTokenResult = HttpUtils.post(getAccessTokenUrl, null);
-        AccessToken accessToken = HttpUtils.xmlToBean(AccessToken.class, accessTokenResult);
+        AccessToken accessToken = wxService.getAccessToken();
         if (null == accessToken) {
             logger.info("push message to user end--result:{}", "推送失败，获取小程序的accessToken失败");
             return;
