@@ -665,6 +665,18 @@
 			<artifactId>httpmime</artifactId>
 			<version>${httpclient.version}</version>
 		</dependency>
+
+		<!-- zxing -->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.2.1</version>
+		</dependency>
 		
 	</dependencies>
 

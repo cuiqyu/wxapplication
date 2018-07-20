@@ -19,6 +19,7 @@ public class Order extends DataEntity<Order> {
     private String customerName;
     private String customerWxId;
     private String storeId;
+    private String tableNum;
     private Date createAt;
     private Date createDay;
     private Date createMonth;
@@ -151,4 +152,11 @@ public class Order extends DataEntity<Order> {
         this.createYear = createYear;
     }
 
+    public String getTableNum() {
+        return tableNum;
+    }
+
+    public void setTableNum(String tableNum) {
+        this.tableNum = tableNum;
+    }
 }

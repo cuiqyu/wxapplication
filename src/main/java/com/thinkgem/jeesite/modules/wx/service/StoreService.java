@@ -1,9 +1,12 @@
 package com.thinkgem.jeesite.modules.wx.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.zxing.WriterException;
 import com.thinkgem.jeesite.modules.wx.entity.FoodCategory;
+import com.thinkgem.jeesite.modules.wx.utils.QRCodeFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,8 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.wx.entity.Store;
 import com.thinkgem.jeesite.modules.wx.dao.StoreDao;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 店铺Service
@@ -88,4 +93,23 @@ public class StoreService extends CrudService<StoreDao, Store> {
         return store;
     }
 
+
+    /**
+     * 一键生成2维码
+     */
+    @RequestMapping(value = "suggest1", method = RequestMethod.GET)
+    public String listSuggestFood11(String storeId, String tableNum, String outFileUri, String logUri) {
+        String content = "{\"storeId\":\"" + storeId + "," + "\"tableNum\":\"" + tableNum + "\"}";
+        //String outFileUri = "/Users/tgp/Downloads/" + System.currentTimeMillis();
+        //String logUri = "/Users/tgp/Downloads/logo.jpeg";
+        int[] size = new int[]{430, 430};
+        String format = "jpg";
+
+        try {
+            new QRCodeFactory().CreatQrImage(content, format, outFileUri, logUri, size);
+        } catch (IOException | WriterException e) {
+            e.printStackTrace();
+        }
+        return outFileUri;
+    }
 }

@@ -12,6 +12,7 @@ public class PostOrder implements Serializable {
     private String storeId;
     private String customerName;
     private String customerWxId;
+    private String tableNum;
     private Map<String,Integer> foodMap;
 
     public String getStoreId() {
@@ -44,5 +45,13 @@ public class PostOrder implements Serializable {
 
     public void setFoodMap(Map<String, Integer> foodMap) {
         this.foodMap = foodMap;
+    }
+
+    public String getTableNum() {
+        return tableNum;
+    }
+
+    public void setTableNum(String tableNum) {
+        this.tableNum = tableNum;
     }
 }

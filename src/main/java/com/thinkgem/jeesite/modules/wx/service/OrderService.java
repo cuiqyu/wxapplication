@@ -114,6 +114,7 @@ public class OrderService extends CrudService<OrderDao, Order> {
         order.setCustomerWxId(postOrder.getCustomerWxId());
         order.setStoreId(postOrder.getStoreId());
         order.setState(OrderState.UNPAID);
+        order.setTableNum(postOrder.getTableNum());
 
         //2.创建订单详情
         List<Order2Food> order2Foods = new ArrayList<>();
