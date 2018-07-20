@@ -1,14 +1,20 @@
 package com.thinkgem.jeesite.modules.wx.service;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.google.zxing.WriterException;
 import com.thinkgem.jeesite.modules.wx.entity.FoodCategory;
 import com.thinkgem.jeesite.modules.wx.utils.QRCodeFactory;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +22,11 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.wx.entity.Store;
 import com.thinkgem.jeesite.modules.wx.dao.StoreDao;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * 店铺Service
@@ -97,19 +106,58 @@ public class StoreService extends CrudService<StoreDao, Store> {
     /**
      * 一键生成2维码
      */
-    @RequestMapping(value = "suggest1", method = RequestMethod.GET)
-    public String listSuggestFood11(String storeId, String tableNum, String outFileUri, String logUri) {
-        String content = "{\"storeId\":\"" + storeId + "," + "\"tableNum\":\"" + tableNum + "\"}";
-        //String outFileUri = "/Users/tgp/Downloads/" + System.currentTimeMillis();
-        //String logUri = "/Users/tgp/Downloads/logo.jpeg";
-        int[] size = new int[]{430, 430};
-        String format = "jpg";
+    public String gennarate2WeiMa(String fileName) {
+        getminiqrQr("",fileName);
+        return fileName;
+    }
 
+    public void getminiqrQr(String accessToken,String fileName) {
+        RestTemplate rest = new RestTemplate();
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
         try {
-            new QRCodeFactory().CreatQrImage(content, format, outFileUri, logUri, size);
-        } catch (IOException | WriterException e) {
-            e.printStackTrace();
+            String url = "https://api.weixin.qq.com/wxa/getwxacode?access_token="+accessToken;
+            Map<String,Object> param = new HashMap<>();
+            param.put("page", "pages/index/index");
+            param.put("width", 430);
+            param.put("auto_color", false);
+            Map<String,Object> line_color = new HashMap<>();
+            line_color.put("r", 0);
+            line_color.put("g", 0);
+            line_color.put("b", 0);
+            param.put("line_color", line_color);
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+            HttpEntity requestEntity = new HttpEntity(param, headers);
+            ResponseEntity<byte[]> entity = rest.exchange(url, HttpMethod.POST, requestEntity, byte[].class, new Object[0]);
+            byte[] result = entity.getBody();
+            inputStream = new ByteArrayInputStream(result);
+            File file = new File(fileName);
+            if (!file.exists()){
+                file.createNewFile();
+            }
+            outputStream = new FileOutputStream(file);
+            int len = 0;
+            byte[] buf = new byte[1024];
+            while ((len = inputStream.read(buf, 0, 1024)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+            outputStream.flush();
+        } catch (Exception e) {
+        } finally {
+            if(inputStream != null){
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(outputStream != null){
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        return outFileUri;
     }
 }
