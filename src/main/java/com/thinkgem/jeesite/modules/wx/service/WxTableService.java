@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.thinkgem.jeesite.common.entity.ActionBaseDto;
-import com.thinkgem.jeesite.modules.wx.entity.vo.AccessToken;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +78,7 @@ public class WxTableService extends CrudService<WxTableDao, WxTable> {
         // 调用微信生成小程序码的接口
         String urlParam = new StringBuffer("?storeId=")
                 .append(wxTable.getStoreId()).append("&tableNum=").append(wxTable.getTableId()).toString();
-        ActionBaseDto<String> generatorQrCode = wxService.generatorQrCode(urlParam, fileUploadPath + "\\" + new Date().getTime() + ".jpg", fileUploadPath);
+        ActionBaseDto<String> generatorQrCode = wxService.generatorQrCode(urlParam, fileUploadPath + "\\" + new Date().getTime() + ".png", fileUploadPath);
         if (generatorQrCode.isFailed()) {
             logger.error("新增桌号失败，生成桌号小程序码失败，失败原因：{}", generatorQrCode.getDesc());
             return ActionBaseDto.getFailedInstance("生成桌号小程序码失败，失败原因：" + generatorQrCode.getDesc());

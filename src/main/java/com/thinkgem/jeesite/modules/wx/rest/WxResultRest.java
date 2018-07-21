@@ -8,6 +8,7 @@ import com.thinkgem.jeesite.modules.wx.utils.HttpUtils;
 import com.thinkgem.jeesite.modules.wx.utils.JsonUtils;
 import com.thinkgem.jeesite.modules.wx.utils.MD5Util;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,14 +115,14 @@ public class WxResultRest {
         }
 
         // 获取我们的accessToken
-        AccessToken accessToken = wxService.getAccessToken();
-        if (null == accessToken) {
+        String accessToken = wxService.getAccessToken();
+        if (StringUtils.isEmpty(accessToken)) {
             logger.info("push message to user end--result:{}", "推送失败，获取小程序的accessToken失败");
             return;
         }
 
         // 给用户推送消息
-        String pushUrl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + accessToken.getAccess_token();
+        String pushUrl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + accessToken;
         SendMessageVo message = new SendMessageVo();
         message.setTouser(wxResultVo.getOpenid());
         message.setTemplate_id(order_pay_success_template_id); // 支付成功 TODO
