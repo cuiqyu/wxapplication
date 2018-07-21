@@ -25,13 +25,13 @@
         FROM wx_table a
         <where>
             <if test="tableId != null and tableId != ''">
-                a.table_id = #{tableId}
+                AND a.table_id = #{tableId}
             </if>
             <if test="tableName != null and tableName != ''">
-                a.table_name = #{tableName}
+                AND a.table_name = #{tableName}
             </if>
             <if test="storeId != null and storeId != ''">
-                a.store_id = #{storeId}
+                AND a.store_id = #{storeId}
             </if>
         </where>
         <choose>

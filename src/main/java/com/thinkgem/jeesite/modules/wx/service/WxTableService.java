@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.thinkgem.jeesite.common.entity.ActionBaseDto;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +74,16 @@ public class WxTableService extends CrudService<WxTableDao, WxTable> {
         if (StringUtils.isEmpty(wxTable.getStoreId())) {
             logger.error("新增桌号失败，店铺不能为空！");
             return ActionBaseDto.getFailedInstance("店铺不能为空");
+        }
+
+        // 相同的店铺不能添加相同的桌号
+        WxTable wxTable1 = new WxTable();
+        wxTable1.setStoreId(wxTable.getStoreId());
+        wxTable1.setTableId(wxTable.getTableId());
+        List<WxTable> list = findList(wxTable1);
+        if (CollectionUtils.isNotEmpty(list)) {
+            logger.error("新增桌号失败，相同的店铺不能添加重复的桌号！");
+            return ActionBaseDto.getFailedInstance("相同的店铺不能添加重复的桌号");
         }
 
         // 调用微信生成小程序码的接口
