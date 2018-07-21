@@ -9,8 +9,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 import com.thinkgem.jeesite.common.entity.ActionBaseDto;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -63,7 +65,7 @@ public class WxService {
         FileOutputStream out = null;
         try {
             Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("page", table_number_jump_link + param);
+            paramMap.put("path", table_number_jump_link + param);
             paramMap.put("width", qr_code_width);
             paramMap.put("auto_color", false);
             Map<String,Object> line_color = new HashMap<>();
@@ -77,8 +79,9 @@ public class WxService {
             HttpPost httpPost = new HttpPost("https://api.weixin.qq.com/wxa/getwxacode?access_token="+accessToken);
             httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
             String body = JSON.toJSONString(paramMap);
-            StringEntity entitys = new StringEntity(body);
-            entitys.setContentType("image/png");
+            StringEntity entitys = new StringEntity(body,"utf-8");
+            entitys.setContentType("text/json");
+            entitys.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
 
             httpPost.setEntity(entitys);
             HttpResponse response = httpClient.execute(httpPost);
