@@ -8,11 +8,8 @@ import com.thinkgem.jeesite.modules.wx.constant.OrderState;
 import com.thinkgem.jeesite.modules.wx.constant.WechatConstant;
 import com.thinkgem.jeesite.modules.wx.entity.*;
 import com.thinkgem.jeesite.modules.wx.entity.vo.*;
-import com.thinkgem.jeesite.modules.wx.utils.HttpUtils;
-import com.thinkgem.jeesite.modules.wx.utils.MD5Util;
-import com.thinkgem.jeesite.modules.wx.utils.JsonUtils;
+import com.thinkgem.jeesite.modules.wx.utils.*;
 import com.thinkgem.jeesite.modules.wx.dao.OrderDao;
-import com.thinkgem.jeesite.modules.wx.utils.UUIDUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -21,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.thinkgem.jeesite.modules.wx.constant.WechatConstant.*;
@@ -35,6 +33,8 @@ import static com.thinkgem.jeesite.modules.wx.constant.WechatConstant.*;
 public class OrderService extends CrudService<OrderDao, Order> {
 
     private final static Logger logger = LoggerFactory.getLogger(OrderService.class);
+
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     private OrderDao orderDao;
@@ -168,13 +168,31 @@ public class OrderService extends CrudService<OrderDao, Order> {
         vo.setSign(signB);
         vo.setNonce_str(nonceStr);
         vo.setTimeStamp(timeStamp);
+        // 调用小票打印接口
+        print(order);
         return vo;
 
         //3. 增加菜品的销量
+       // return true;
 
-//
-//        return true;
+    }
 
+    /**
+     * 小票打印
+     */
+    public void print(Order order) {
+/*        StringBuffer requestUrl = new StringBuffer("http://localhost:8080/print"); // TODO 你们可以自行修改
+        requestUrl.append("?table=").append(order.getTableNum());
+        Store store = storeService.findStoreById(order.getStoreId());
+        if (null != store) {
+            requestUrl.append("&shopName=").append(store.getName());
+        }
+        requestUrl.append("&orderId=").append(order.getId());
+        requestUrl.append("&time=").append(sdf.format(order.getCreateAt()));
+        requestUrl.append("&price=").append(order.getAmount());
+        requestUrl.append("&data=").append(order.getFoodDetail());
+
+        HttpUtil.doGet(requestUrl.toString());*/
     }
 
     /**
