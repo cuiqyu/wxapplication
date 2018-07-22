@@ -62,7 +62,7 @@ public class WxTableService extends CrudService<WxTableDao, WxTable> {
     }
 
     @Transactional(readOnly = false)
-    public ActionBaseDto insert(WxTable wxTable, String fileUploadPath) {
+    public ActionBaseDto insert(WxTable wxTable, String fileUploadPath, String savePath) {
         if (null == wxTable) {
             logger.error("新增桌号失败，参数不能为空！");
             return ActionBaseDto.getFailedInstance("参数不能为空");
@@ -89,7 +89,8 @@ public class WxTableService extends CrudService<WxTableDao, WxTable> {
         // 调用微信生成小程序码的接口
         String urlParam = new StringBuffer("?storeId=")
                 .append(wxTable.getStoreId()).append("&tableNum=").append(wxTable.getTableId()).toString();
-        ActionBaseDto<String> generatorQrCode = wxService.generatorQrCode(urlParam, fileUploadPath + "\\" + new Date().getTime() + ".png", fileUploadPath);
+        String fileName = new Date().getTime() + ".png";
+        ActionBaseDto<String> generatorQrCode = wxService.generatorQrCode(urlParam, fileUploadPath + "\\" + fileName, fileUploadPath, savePath + "\\" + fileName);
         if (generatorQrCode.isFailed()) {
             logger.error("新增桌号失败，生成桌号小程序码失败，失败原因：{}", generatorQrCode.getDesc());
             return ActionBaseDto.getFailedInstance("生成桌号小程序码失败，失败原因：" + generatorQrCode.getDesc());

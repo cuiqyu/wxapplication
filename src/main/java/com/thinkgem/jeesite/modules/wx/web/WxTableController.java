@@ -134,8 +134,9 @@ public class WxTableController extends BaseController {
     @RequiresPermissions("wx:wxTable:edit")
     @RequestMapping(value = "save")
     public String save(WxTable wxTable, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        String realPath = request.getSession().getServletContext().getRealPath("/qrimg");
-        ActionBaseDto actionBaseDto = wxTableService.insert(wxTable, realPath);
+        String realPath = request.getSession().getServletContext().getRealPath("\\qrimg");
+        String savePath = "\\qrimg";
+        ActionBaseDto actionBaseDto = wxTableService.insert(wxTable, realPath, savePath);
         if (actionBaseDto.isSuccess()) {
             logger.info("保存桌号成功！");
             addMessage(redirectAttributes, "保存桌号成功");

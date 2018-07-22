@@ -1,7 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <html>
 <head>
+    <base href="<%=basePath%>">
     <title>桌号管理管理</title>
     <meta name="decorator" content="default"/>
     <script type="text/javascript">

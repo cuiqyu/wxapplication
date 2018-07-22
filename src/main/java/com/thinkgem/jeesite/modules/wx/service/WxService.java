@@ -53,7 +53,7 @@ public class WxService {
      * @param param
      * @return
      */
-    public ActionBaseDto<String> generatorQrCode(String param, String fileName, String filePath) {
+    public ActionBaseDto<String> generatorQrCode(String param, String fileName, String filePath, String savePath) {
         // 获取小程序的access_token
         String accessToken = getAccessToken();
         if (StringUtils.isEmpty(accessToken)) {
@@ -102,7 +102,7 @@ public class WxService {
             out.flush();
             out.close();
 
-            return ActionBaseDto.getSuccessInstance("", fileName);
+            return ActionBaseDto.getSuccessInstance("", savePath);
         }  catch (Exception e) {
             e.printStackTrace();
             return ActionBaseDto.getFailedInstance("调用生成小程序码接口失败！");
