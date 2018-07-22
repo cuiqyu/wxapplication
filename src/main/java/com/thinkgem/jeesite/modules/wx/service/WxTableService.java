@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.wx.service;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -90,7 +91,7 @@ public class WxTableService extends CrudService<WxTableDao, WxTable> {
         String urlParam = new StringBuffer("?storeId=")
                 .append(wxTable.getStoreId()).append("&tableNum=").append(wxTable.getTableId()).toString();
         String fileName = new Date().getTime() + ".png";
-        ActionBaseDto<String> generatorQrCode = wxService.generatorQrCode(urlParam, fileUploadPath + "\\" + fileName, fileUploadPath, savePath + "\\" + fileName);
+        ActionBaseDto<String> generatorQrCode = wxService.generatorQrCode(urlParam, fileUploadPath + "/" + fileName, fileUploadPath, savePath + "/" + fileName);
         if (generatorQrCode.isFailed()) {
             logger.error("新增桌号失败，生成桌号小程序码失败，失败原因：{}", generatorQrCode.getDesc());
             return ActionBaseDto.getFailedInstance("生成桌号小程序码失败，失败原因：" + generatorQrCode.getDesc());
